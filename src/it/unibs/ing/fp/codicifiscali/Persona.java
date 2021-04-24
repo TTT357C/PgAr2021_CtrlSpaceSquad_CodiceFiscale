@@ -19,15 +19,13 @@ public class Persona {
      * @param sesso
      * @param data_nascita
      * @param luogo_nascita
-     * @param char_controllo
      */
-    public Persona(String nome, String cognome, char sesso, Date data_nascita, Comune luogo_nascita, char char_controllo) {
+    public Persona(String nome, String cognome, char sesso, Date data_nascita, Comune luogo_nascita) {
         this.nome = nome;
         this.cognome = cognome;
         this.sesso = sesso;
         this.data_nascita = data_nascita;
         this.luogo_nascita = luogo_nascita;
-        this.char_controllo = char_controllo;
     }
 
     /**
@@ -76,14 +74,6 @@ public class Persona {
      */
     public Comune getLuogo_nascita() {
         return luogo_nascita;
-    }
-
-    /**
-     * Metodo che ritorna il carattere di controllo del C.F.
-     * @return Ritorna carattere di controllo
-     */
-    public char getChar_controllo() {
-        return char_controllo;
     }
 
     /**
