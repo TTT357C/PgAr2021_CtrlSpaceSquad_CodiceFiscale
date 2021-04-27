@@ -100,7 +100,7 @@ public class ScriviXML {
 
         //giorno
 
-        int giorno_int = persona.getData_nascita().getDay();
+        int giorno_int = persona.getData_nascita().getDayOfMonth();
 
         if(persona.getSesso() == 'F'){
             giorno_int = giorno_int + 30;
