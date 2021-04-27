@@ -186,10 +186,10 @@ public class Persona {
      * Thomas Causetti
      * @return
      */
-    private String trovaVocaliOConsonanti(char[] array){
+    private String trovaVocaliOConsonanti(char[] array, String stringa){
         String estratto = "";
-        for(int i=0; i<this.getCognome().length(); i++){
-            char temp1 = this.getCognome().charAt(i);
+        for(int i=0; i < stringa.length(); i++){
+            char temp1 = stringa.charAt(i);
             for(int j=0; j<array.length; j++){
                 char temp2 = array[j];
                 if(temp1==temp2){
