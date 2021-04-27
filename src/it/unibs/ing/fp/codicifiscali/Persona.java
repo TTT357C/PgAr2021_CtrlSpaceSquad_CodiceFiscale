@@ -182,6 +182,25 @@ public class Persona {
     }
 
     /**
+     * Metodo che evita la ripetizione di questo doppio ciclo in calcoloCodiceFiscale
+     * Thomas Causetti
+     * @return
+     */
+    private String trovaVocaliOConsonanti(char[] array){
+        String estratto = "";
+        for(int i=0; i<this.getCognome().length(); i++){
+            char temp1 = this.getCognome().charAt(i);
+            for(int j=0; j<array.length; j++){
+                char temp2 = array[j];
+                if(temp1==temp2){
+                    estratto += temp1;
+                }
+            }
+        }
+        return estratto;
+    }
+
+    /**
      * Metodo che permette di controllare se il codice fiscale è giusto
      * @return Ritorna true se il codice fiscale è falido altrimenti falso
      */
