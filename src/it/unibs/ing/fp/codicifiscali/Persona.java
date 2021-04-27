@@ -232,4 +232,11 @@ public class Persona {
             return false;
         }
     }*/
+
+    @Override
+    public String toString() {
+        return "Persona --> nome: " + nome + ", cognome: " + cognome + ", sesso: " + sesso
+                + ", data_nascita: " + data_nascita + ", luogo_nascita: " + luogo_nascita
+                + ", char_controllo: " + char_controllo + ", cod_fiscale: " + cod_fiscale + "\n";
+    }
 }

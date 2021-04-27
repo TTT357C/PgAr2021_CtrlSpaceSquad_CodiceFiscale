@@ -30,4 +30,9 @@ public class Comune {
     public String getCodice() {
         return codice;
     }
+
+    @Override
+    public String toString() {
+        return "Comune --> nome: " + nome + ", codice: " + codice + "\n";
+    }
 }

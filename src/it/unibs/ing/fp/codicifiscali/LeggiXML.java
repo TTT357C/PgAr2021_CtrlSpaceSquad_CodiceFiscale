@@ -10,7 +10,16 @@ import java.util.*;
 
 public class LeggiXML {
 
-    public static void extractedCity(ArrayList<Comune> city, DocumentBuilderFactory dbf,String FILENAME) {
+    //Costanti dei Tag
+    public static final String TAG_PERSONA = "persona";
+    public static final String TAG_NOME = "nome";
+    public static final String TAG_CODICE = "codice";
+    public static final String TAG_COGNOME = "cognome";
+    public static final String TAG_SESSO = "sesso";
+    public static final String TAG_COMUNE_NASCITA = "comune_nascita";
+    public static final String TAG_DATA_NASCITA = "data_nascita";
+
+    public static void extractedCity(ArrayList<Comune> city, DocumentBuilderFactory dbf, String FILENAME) {
         try {
             dbf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
             DocumentBuilder db = dbf.newDocumentBuilder();
@@ -21,8 +30,8 @@ public class LeggiXML {
                 Node node = list.item(i);
                 if (node.getNodeType() == Node.ELEMENT_NODE) {
                     Element element = (Element) node;
-                    String name = element.getElementsByTagName("nome").item(0).getTextContent();
-                    String code = element.getElementsByTagName("codice").item(0).getTextContent();
+                    String name = element.getElementsByTagName(TAG_NOME).item(0).getTextContent();
+                    String code = element.getElementsByTagName(TAG_CODICE).item(0).getTextContent();
                     city.add(new Comune(name,code));
                 }
             }
@@ -37,16 +46,16 @@ public class LeggiXML {
             DocumentBuilder db = dbf.newDocumentBuilder();
             Document doc = db.parse(new File(FILENAME));
             doc.getDocumentElement().normalize();
-            NodeList list = doc.getElementsByTagName("persona");
+            NodeList list = doc.getElementsByTagName(TAG_PERSONA);
             for (int i = 0; i < list.getLength(); i++) {
                 Node node = list.item(i);
                 if (node.getNodeType() == Node.ELEMENT_NODE) {
                     Element element = (Element) node;
-                    String firstname = element.getElementsByTagName("nome").item(0).getTextContent();
-                    String lastname = element.getElementsByTagName("cognome").item(0).getTextContent();
-                    String sesso = element.getElementsByTagName("sesso").item(0).getTextContent();
-                    String comune = element.getElementsByTagName("comune_nascita").item(0).getTextContent();
-                    String bday = element.getElementsByTagName("data_nascita").item(0).getTextContent();
+                    String firstname = element.getElementsByTagName(TAG_NOME).item(0).getTextContent();
+                    String lastname = element.getElementsByTagName(TAG_COGNOME).item(0).getTextContent();
+                    String sesso = element.getElementsByTagName(TAG_SESSO).item(0).getTextContent();
+                    String comune = element.getElementsByTagName(TAG_COMUNE_NASCITA).item(0).getTextContent();
+                    String bday = element.getElementsByTagName(TAG_DATA_NASCITA).item(0).getTextContent();
                     char sex = sesso.charAt(0);
                     LocalDate date1 = LocalDate.parse(bday);
                     Comune comune1 = null;

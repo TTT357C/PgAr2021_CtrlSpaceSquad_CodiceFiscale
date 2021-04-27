@@ -19,6 +19,9 @@ public class Main {
         LeggiXML.extractedPersone(persone, people_builder,FILENAME_PERSONE,comuni);
 
 
+
+        System.out.println(comuni);
+        System.out.println(persone);
     }
 
 
