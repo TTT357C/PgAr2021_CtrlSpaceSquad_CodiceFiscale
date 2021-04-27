@@ -106,6 +106,12 @@ public class Persona {
         String comune_nascita = "";
 
         //nome
+
+        //TODO Mirko controlla
+
+        nome_estratto+=trovaVocaliOConsonanti(ARR_CONSONANTI,nome);
+
+        /*
         for(int i=0; i<this.getNome().length(); i++){
             char temp1 = this.getNome().charAt(i);
             for(int j=0; j<ARR_CONSONANTI.length; j++) {
@@ -114,8 +120,11 @@ public class Persona {
                     nome_estratto += temp1;
                 }
             }
-        }
+        }*/
 
+        nome_estratto+=trovaVocaliOConsonanti(ARR_VOCALI,nome);
+
+        /*
         for(int i=0; i<this.getNome().length(); i++){
             char temp1 = this.getNome().charAt(i);
             for(int j=0; j<ARR_VOCALI.length; j++){
@@ -125,9 +134,16 @@ public class Persona {
                 }
             }
         }
+        */
         cod_fiscale += nome_estratto.substring(0, 4);
 
+
+
         //cognome
+
+        cognome_estratto+=trovaVocaliOConsonanti(ARR_CONSONANTI,cognome);
+
+        /*
         for(int i=0; i<this.getCognome().length(); i++){
             char temp1 = this.getCognome().charAt(i);
             for(int j=0; j<ARR_CONSONANTI.length; j++) {
@@ -136,8 +152,10 @@ public class Persona {
                     cognome_estratto += temp1;
                 }
             }
-        }
+        }*/
 
+        cognome_estratto+=trovaVocaliOConsonanti(ARR_VOCALI,cognome);
+        /*
         for(int i=0; i<this.getCognome().length(); i++){
             char temp1 = this.getCognome().charAt(i);
             for(int j=0; j<ARR_VOCALI.length; j++){
@@ -146,7 +164,7 @@ public class Persona {
                     cognome_estratto += temp1;
                 }
             }
-        }
+        }*/
         cod_fiscale += cognome_estratto.substring(0, 4);
 
         //giorno
@@ -183,7 +201,7 @@ public class Persona {
 
     /**
      * Metodo che evita la ripetizione di questo doppio ciclo in calcoloCodiceFiscale
-     * Thomas Causetti
+     * @author Thomas Causetti
      * @return stringa
      */
     private String trovaVocaliOConsonanti(char[] array, String stringa){
@@ -202,9 +220,16 @@ public class Persona {
 
     /**
      * Metodo che permette di controllare se il codice fiscale è giusto
-     * @return Ritorna true se il codice fiscale è falido altrimenti falso
+     * @author Thomas Causetti
+     * @return Ritorna true se il codice fiscale è valido altrimenti falso
      */
-    public boolean controlloCodFiscale(){
-        return false;
-    }
+    /*public boolean controlloCodFiscale(){
+        //TODO sistema
+        if (cod_fiscale.equals(calcoloCodiceFiscale())){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }*/
 }
