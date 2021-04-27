@@ -8,6 +8,10 @@ import javax.xml.stream.XMLStreamReader;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 
+/**
+ * @author Thomas
+ */
+
 public class Main {
     public static final String FILENAME_COMUNI = "comuni.xml";
     public static final String FILENAME_PERSONE = "inputPersone.xml";
