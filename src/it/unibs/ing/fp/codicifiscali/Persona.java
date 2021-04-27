@@ -184,7 +184,7 @@ public class Persona {
     /**
      * Metodo che evita la ripetizione di questo doppio ciclo in calcoloCodiceFiscale
      * Thomas Causetti
-     * @return
+     * @return stringa
      */
     private String trovaVocaliOConsonanti(char[] array, String stringa){
         String estratto = "";
