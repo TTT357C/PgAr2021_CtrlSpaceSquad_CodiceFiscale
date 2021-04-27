@@ -4,6 +4,8 @@ import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 import javax.xml.XMLConstants;
 import javax.xml.parsers.*;
+import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamReader;
 import java.io.*;
 import java.time.LocalDate;
 import java.util.*;
@@ -76,23 +78,42 @@ public class LeggiXML {
     /**
      * @author Thomas Causetti
      */
-    public static void extractedCodici(ArrayList<CodiceFiscale> arr, DocumentBuilderFactory dbf,String filename) {
+    public static void extractedCodici(ArrayList<CodiceFiscale> arr, XMLStreamReader xmlr, String filename) {
         try {
-            dbf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
-            DocumentBuilder db = dbf.newDocumentBuilder();
-            Document doc = db.parse(new File(filename));
-            doc.getDocumentElement().normalize();
-            NodeList list = doc.getElementsByTagName("codici");
-            for (int i = 0; i < list.getLength(); i++) {
-                Node node = list.item(i);
-                if (node.getNodeType() == Node.ELEMENT_NODE) {
-                    Element element = (Element) node;
-                    String codice_fis_str = element.getElementsByTagName("codice").item(0).getTextContent();
-                    arr.add(new CodiceFiscale(codice_fis_str));
+            while (xmlr.hasNext()) { // continua a leggere finché ha eventi a disposizione
+
+                // switch sul tipo di evento
+                switch (xmlr.getEventType()) {
+
+                    // inizio del documento: stampa che inizia il documento
+                    case XMLStreamConstants.START_DOCUMENT:
+                        System.out.println("Start Read Doc " + filename);
+                        break;
+
+                    // inizio di un elemento: stampa il nome del tag e i suoi attributi
+                    case XMLStreamConstants.START_ELEMENT:
+                        System.out.println("Tag " + xmlr.getLocalName());
+                        //entra per leggere caratteri
+                        xmlr.next();
+                        // content all’interno di un elemento: stampa il testo
+                        // controlla se il testo non contiene solo spazi
+                        if (xmlr.getText().trim().length() > 0)
+                            System.out.println("-> " + xmlr.getText());
+                        arr.add(new CodiceFiscale(xmlr.getText()));
+                        break;
+
+                    // fine di un elemento: stampa il nome del tag chiuso
+                    case XMLStreamConstants.END_ELEMENT:
+                        System.out.println("END-Tag " + xmlr.getLocalName());
+                        break;
+
+                    default:
+                        break;
                 }
+                xmlr.next();
             }
-        } catch (ParserConfigurationException | SAXException | IOException e) {
-            e.printStackTrace();
+        }catch (Exception e){
+            System.err.println(e);
         }
     }
 }

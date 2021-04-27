@@ -164,4 +164,8 @@ public class CodiceFiscale {
         return Objects.equals(codice_fiscale, that.codice_fiscale);
     }
 
+    @Override
+    public String toString() {
+        return "CodiceFiscale: " + codice_fiscale + "\n";
+    }
 }

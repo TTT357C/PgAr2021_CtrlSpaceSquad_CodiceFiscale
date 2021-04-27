@@ -3,12 +3,15 @@ package it.unibs.ing.fp.codicifiscali;
 import it.unibs.ing.fp.mylib.InputDati;
 
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamReader;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 
 public class Main {
     public static final String FILENAME_COMUNI = "comuni.xml";
     public static final String FILENAME_PERSONE = "inputPersone.xml";
-    public static final String FILENAME_CODICI = "inputPersone.xml";
+    public static final String FILENAME_CODICI = "codiciFiscali.xml";
     public static final String MENU = "  ___________________________________\n"
                                     + " |                                   |\n"
                                     + " |   - Codici Fiscali -              |\n"
@@ -42,13 +45,22 @@ public class Main {
                         DocumentBuilderFactory people_builder = DocumentBuilderFactory.newInstance();
                         LeggiXML.extractedPersone(persone, people_builder,FILENAME_PERSONE,comuni);
 
-                        //lettura da file delle persone
-                        ArrayList<CodiceFiscale> codice_fis = new ArrayList<>();
-                        DocumentBuilderFactory codici_builder = DocumentBuilderFactory.newInstance();
-                        LeggiXML.extractedCodici(codice_fis, codici_builder,FILENAME_CODICI);
+                        //lettura da file dei codici
+                        ArrayList <CodiceFiscale> codice_fis = new ArrayList<CodiceFiscale>();
+                        XMLInputFactory xmlif = null;
+                        XMLStreamReader xmlr = null;
+                        try {
+                            xmlif = XMLInputFactory.newInstance();
+                            xmlr = xmlif.createXMLStreamReader(FILENAME_CODICI, new FileInputStream(FILENAME_CODICI));
+                        } catch (Exception e) {
+                            System.out.println("Errore nell'inizializzazione del reader:");
+                            System.out.println(e.getMessage());
+                        }
+                        LeggiXML.extractedCodici(codice_fis, xmlr, FILENAME_CODICI);
 
                         System.out.println(comuni);
                         System.out.println(persone);
+                        System.out.println(codice_fis);
                         break;
                     default:
                         break;
