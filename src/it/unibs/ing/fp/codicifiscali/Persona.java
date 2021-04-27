@@ -1,13 +1,15 @@
 package it.unibs.ing.fp.codicifiscali;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.*;
 
 public class Persona {
 
     private String nome;
     private String cognome;
     private char sesso;
-    private Date data_nascita;
+    private LocalDate data_nascita;
     private Comune luogo_nascita;
     private char char_controllo;
     private String cod_fiscale;
@@ -20,7 +22,7 @@ public class Persona {
      * @param data_nascita
      * @param luogo_nascita
      */
-    public Persona(String nome, String cognome, char sesso, Date data_nascita, Comune luogo_nascita) {
+    public Persona(String nome, String cognome, char sesso, LocalDate data_nascita, Comune luogo_nascita) {
         this.nome = nome;
         this.cognome = cognome;
         this.sesso = sesso;
@@ -64,7 +66,7 @@ public class Persona {
      * Metodo che ritorna la data di nascita
      * @return Ritorna data di nascita della persona
      */
-    public Date getData_nascita() {
+    public LocalDate getData_nascita() {
         return data_nascita;
     }
 
@@ -77,11 +79,109 @@ public class Persona {
     }
 
     /**
+     * Metodo permette di settare il C.F. della persona
+     * utilizzando il valore restituito dalla funzione calcoloCodiceFiscale
+     */
+    public void setCodiceFiscale(ArrayList<Comune> comune){
+        this.cod_fiscale = this.calcoloCodiceFiscale(comune);
+    }
+
+    /**
      * Metodo che permette di calcolare il codice fiscale di una persona
      * @return Ritorna il codice fiscale di una persona
+     * @author Mirko Rossi
      */
-    public String calcoloCodiceFiscale(){
-        return "";
+    public String calcoloCodiceFiscale(ArrayList<Comune> comune){
+
+        final char[] ARR_VOCALI = {'A', 'E', 'I', 'O', 'U'};
+        final char[] ARR_CONSONANTI = {'B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'X', 'Y', 'Z'};
+        final char[] ARR_MESI = {};
+
+        String cod_fiscale = "";
+        String nome_estratto = "";
+        String cognome_estratto = "";
+        String giorno_nascita = "";
+        String mese_nascita = "";
+        String anno_nascita = "";
+        String comune_nascita = "";
+
+        //nome
+        for(int i=0; i<this.getNome().length(); i++){
+            char temp1 = this.getNome().charAt(i);
+            for(int j=0; j<ARR_CONSONANTI.length; j++) {
+                char temp2 = ARR_CONSONANTI[j];
+                if (temp1 == temp2) {
+                    nome_estratto += temp1;
+                }
+            }
+        }
+
+        for(int i=0; i<this.getNome().length(); i++){
+            char temp1 = this.getNome().charAt(i);
+            for(int j=0; j<ARR_VOCALI.length; j++){
+                char temp2 = ARR_VOCALI[j];
+                if(temp1==temp2){
+                    nome_estratto += temp1;
+                }
+            }
+        }
+        cod_fiscale += nome_estratto.substring(0, 4);
+
+        //cognome
+        for(int i=0; i<this.getCognome().length(); i++){
+            char temp1 = this.getCognome().charAt(i);
+            for(int j=0; j<ARR_CONSONANTI.length; j++) {
+                char temp2 = ARR_CONSONANTI[j];
+                if (temp1 == temp2) {
+                    cognome_estratto += temp1;
+                }
+            }
+        }
+
+        for(int i=0; i<this.getCognome().length(); i++){
+            char temp1 = this.getCognome().charAt(i);
+            for(int j=0; j<ARR_VOCALI.length; j++){
+                char temp2 = ARR_VOCALI[j];
+                if(temp1==temp2){
+                    cognome_estratto += temp1;
+                }
+            }
+        }
+        cod_fiscale += cognome_estratto.substring(0, 4);
+
+        //giorno
+        int giorno_int = this.getData_nascita().getDayOfMonth();
+        if(this.getSesso() == 'F'){
+            giorno_int = giorno_int + 30;
+        }
+        giorno_nascita = giorno_nascita+giorno_int;
+        cod_fiscale += giorno_nascita;
+
+        //mese (i mesi con la classe date partono da 0)
+
+
+
+        //anno
+        int anno_int = this.getData_nascita().getYear();
+        String anno_string="";
+        anno_string = anno_string+anno_int;
+        anno_nascita = anno_string.substring(3, 5);
+        cod_fiscale += anno_nascita;
+
+        //comune
+        for (int i=0; i<comune.size(); i++){
+            if (this.getLuogo_nascita().getNome().equals(comune.get(i).getNome())){
+                comune_nascita = comune.get(i).getCodice();
+            }
+        }
+
+        cod_fiscale += comune_nascita;
+
+        //calcolo carattere controllo
+
+
+
+        return cod_fiscale;
     }
 
     /**
