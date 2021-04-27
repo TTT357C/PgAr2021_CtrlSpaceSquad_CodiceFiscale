@@ -8,6 +8,7 @@ import java.util.ArrayList;
 public class Main {
     public static final String FILENAME_COMUNI = "comuni.xml";
     public static final String FILENAME_PERSONE = "inputPersone.xml";
+    public static final String FILENAME_CODICI = "inputPersone.xml";
     public static final String MENU = "  ___________________________________\n"
                                     + " |                                   |\n"
                                     + " |   - Codici Fiscali -              |\n"
@@ -19,7 +20,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        int scelta=0;
+        int scelta;
         do{
             System.out.println(MENU);
             scelta = InputDati.leggiIntero(" -->", 0, 1);
@@ -40,6 +41,11 @@ public class Main {
                         ArrayList<Persona> persone = new ArrayList<>();
                         DocumentBuilderFactory people_builder = DocumentBuilderFactory.newInstance();
                         LeggiXML.extractedPersone(persone, people_builder,FILENAME_PERSONE,comuni);
+
+                        //lettura da file delle persone
+                        ArrayList<CodiceFiscale> codice_fis = new ArrayList<>();
+                        DocumentBuilderFactory codici_builder = DocumentBuilderFactory.newInstance();
+                        LeggiXML.extractedCodici(codice_fis, codici_builder,FILENAME_CODICI);
 
                         System.out.println(comuni);
                         System.out.println(persone);

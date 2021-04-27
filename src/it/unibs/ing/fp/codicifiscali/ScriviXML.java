@@ -14,10 +14,7 @@ public class ScriviXML {
 
         boolean riuscita = true;
 
-        final char[] ARR_VOCALI = {'A', 'E', 'I', 'O', 'U'};
-        final char[] ARR_CONSONANTI = {'B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'X', 'Y', 'Z'};
-        final char[] ARR_MESI = {};
-
+        /*
         String cod_fiscale = "";
         String nome_estratto = "";
         String cognome_estratto = "";
@@ -32,9 +29,9 @@ public class ScriviXML {
 
             char temp1 = persona.getNome().charAt(i);
 
-            for(int j=0; j<ARR_CONSONANTI.length; j++) {
+            for(int j=0; j<Persona.ARR_CONSONANTI.length; j++) {
 
-                char temp2 = ARR_CONSONANTI[j];
+                char temp2 = Persona.ARR_CONSONANTI[j];
 
                 if (temp1 == temp2) {
 
@@ -47,9 +44,9 @@ public class ScriviXML {
 
             char temp1 = persona.getNome().charAt(i);
 
-            for(int j=0; j<ARR_VOCALI.length; j++){
+            for(int j=0; j<Persona.ARR_VOCALI.length; j++){
 
-                char temp2 = ARR_VOCALI[j];
+                char temp2 = Persona.ARR_VOCALI[j];
 
                 if(temp1==temp2){
 
@@ -68,9 +65,9 @@ public class ScriviXML {
 
             char temp1 = persona.getCognome().charAt(i);
 
-            for(int j=0; j<ARR_CONSONANTI.length; j++) {
+            for(int j=0; j<Persona.ARR_CONSONANTI.length; j++) {
 
-                char temp2 = ARR_CONSONANTI[j];
+                char temp2 = Persona.ARR_CONSONANTI[j];
 
                 if (temp1 == temp2) {
 
@@ -84,9 +81,9 @@ public class ScriviXML {
 
             char temp1 = persona.getCognome().charAt(i);
 
-            for(int j=0; j<ARR_VOCALI.length; j++){
+            for(int j=0; j< Persona.ARR_VOCALI.length; j++){
 
-                char temp2 = ARR_VOCALI[j];
+                char temp2 = Persona.ARR_VOCALI[j];
 
                 if(temp1==temp2){
 
@@ -137,6 +134,9 @@ public class ScriviXML {
         }
 
         cod_fiscale += comune_nascita;
+        */
+
+        CodiceFiscale.calcoloCodiceFiscale(persona);
 
         //calcolo carattere controllo
 

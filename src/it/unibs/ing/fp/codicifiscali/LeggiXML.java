@@ -59,6 +59,7 @@ public class LeggiXML {
                     char sex = sesso.charAt(0);
                     LocalDate date1 = LocalDate.parse(bday);
                     Comune comune1 = null;
+
                     for (int j = 0; j < comuni.size() ; j++) {
                         if (comuni.get(j).getNome().equals(comune)) {
                             comune1 = new Comune(comune, comuni.get(j).getCodice());
@@ -72,4 +73,26 @@ public class LeggiXML {
         }
     }
 
+    /**
+     * @author Thomas Causetti
+     */
+    public static void extractedCodici(ArrayList<CodiceFiscale> arr, DocumentBuilderFactory dbf,String filename) {
+        try {
+            dbf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            Document doc = db.parse(new File(filename));
+            doc.getDocumentElement().normalize();
+            NodeList list = doc.getElementsByTagName("codici");
+            for (int i = 0; i < list.getLength(); i++) {
+                Node node = list.item(i);
+                if (node.getNodeType() == Node.ELEMENT_NODE) {
+                    Element element = (Element) node;
+                    String codice_fis_str = element.getElementsByTagName("codice").item(0).getTextContent();
+                    arr.add(new CodiceFiscale(codice_fis_str));
+                }
+            }
+        } catch (ParserConfigurationException | SAXException | IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
