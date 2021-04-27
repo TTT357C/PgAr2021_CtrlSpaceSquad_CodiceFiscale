@@ -169,11 +169,8 @@ public class Persona {
         cod_fiscale += anno_nascita;
 
         //comune
-        for (int i=0; i<comune.size(); i++){
-            if (this.getLuogo_nascita().getNome().equals(comune.get(i).getNome())){
-                comune_nascita = comune.get(i).getCodice();
-            }
-        }
+        comune_nascita = this.luogo_nascita.getCodice();
+
 
         cod_fiscale += comune_nascita;
 
