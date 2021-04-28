@@ -11,12 +11,8 @@ public class Persona {
     private char sesso;
     private LocalDate data_nascita;
     private Comune luogo_nascita;
-    private char char_controllo;
+    private Boolean cod_fisc_pres;
     private CodiceFiscale cod_fiscale;
-
-    public static final char[] ARR_VOCALI = {'A', 'E', 'I', 'O', 'U'};
-    public static final char[] ARR_CONSONANTI = {'B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'X', 'Y', 'Z'};
-    public static final char[] ARR_MESI = {};
 
     /**
      * Costruttore completo mancante di codice fiscale
@@ -106,6 +102,6 @@ public class Persona {
     public String toString() {
         return "Persona --> nome: " + nome + ", cognome: " + cognome + ", sesso: " + sesso
                 + ", data_nascita: " + data_nascita + ", luogo_nascita: " + luogo_nascita
-                + ", char_controllo: " + char_controllo + ", cod_fiscale: " + cod_fiscale + "\n";
+                + ", cod_fisc_pres: " + cod_fisc_pres + ", cod_fiscale: " + cod_fiscale + "\n";
     }
 }

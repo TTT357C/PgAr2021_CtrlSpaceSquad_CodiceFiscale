@@ -8,6 +8,10 @@ import java.util.Objects;
 public class CodiceFiscale {
     private String codice_fiscale;
 
+    public static final char[] ARR_VOCALI = {'A', 'E', 'I', 'O', 'U'};
+    public static final char[] ARR_CONSONANTI = {'B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'X', 'Y', 'Z'};
+    public static final char[] ARR_MESI = {};
+
     public CodiceFiscale(String codice_fiscale) {
         this.codice_fiscale = codice_fiscale;
     }
@@ -32,7 +36,7 @@ public class CodiceFiscale {
 
         //TODO Mirko controlla
 
-        nome_estratto+=trovaVocaliOConsonanti(Persona.ARR_CONSONANTI,persona.getNome());
+        nome_estratto+=trovaVocaliOConsonanti(ARR_CONSONANTI,persona.getNome());
 
         /*
         for(int i=0; i<this.getNome().length(); i++){
@@ -45,7 +49,7 @@ public class CodiceFiscale {
             }
         }*/
 
-        nome_estratto+=trovaVocaliOConsonanti(Persona.ARR_VOCALI, persona.getNome());
+        nome_estratto+=trovaVocaliOConsonanti(ARR_VOCALI, persona.getNome());
 
         /*
         for(int i=0; i<this.getNome().length(); i++){
@@ -64,7 +68,7 @@ public class CodiceFiscale {
 
         //cognome
 
-        cognome_estratto+=trovaVocaliOConsonanti(Persona.ARR_CONSONANTI, persona.getCognome());
+        cognome_estratto+=trovaVocaliOConsonanti(ARR_CONSONANTI, persona.getCognome());
 
         /*
         for(int i=0; i<this.getCognome().length(); i++){
@@ -77,7 +81,7 @@ public class CodiceFiscale {
             }
         }*/
 
-        cognome_estratto+=trovaVocaliOConsonanti(Persona.ARR_VOCALI, persona.getCognome());
+        cognome_estratto+=trovaVocaliOConsonanti(ARR_VOCALI, persona.getCognome());
         /*
         for(int i=0; i<this.getCognome().length(); i++){
             char temp1 = this.getCognome().charAt(i);
