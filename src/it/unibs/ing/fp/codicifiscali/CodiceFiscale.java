@@ -98,8 +98,12 @@ public class CodiceFiscale {
         giorno_nascita = giorno_nascita+giorno_int;
         cod_fiscale_str += giorno_nascita;
 
-        //mese (i mesi con la classe date partono da 0)
+        //mese
 
+        int mese_int = persona.getData_nascita().getMonthValue();
+        for(int i=0; ){
+
+        }
 
 
         //anno
