@@ -32,6 +32,7 @@ public class Persona {
         this.sesso = sesso;
         this.data_nascita = data_nascita;
         this.luogo_nascita = luogo_nascita;
+        this.cod_fisc_pres = false; //non ancora stato controllato
     }
 
     /**
@@ -109,9 +110,6 @@ public class Persona {
     public void setCodiceFiscale(){
         this.cod_fiscale = CodiceFiscale.calcoloCodiceFiscale(this);
     }
-
-
-
 
 
     @Override
