@@ -94,5 +94,7 @@ public class Main {
 
     }
 
-
+    public static ArrayList<Comune> getComuni() {
+        return comuni;
+    }
 }
