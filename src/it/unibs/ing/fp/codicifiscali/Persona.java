@@ -4,6 +4,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.*;
 
+
+/**
+ * @author Mattia Visini e Thomas Causetti
+ */
 public class Persona {
 
     private String nome;
@@ -85,6 +89,18 @@ public class Persona {
     public Comune getLuogo_nascita() {
         return luogo_nascita;
     }
+
+    /**
+     * Metodo che ritorna una variabile booleana, true se il codice fiscale è presente nel file codiciFiscali.xml
+     * @return Ritorna variabile booleana
+     */
+    public Boolean getCod_fisc_pres() { return cod_fisc_pres; }
+
+    /**
+     * Metodo che permette di settare una variabile booleana, true se il codice fiscale è presente nel file codiciFiscali.xml
+     * @param cod_fisc_pres
+     */
+    public void setCod_fisc_pres(Boolean cod_fisc_pres) { this.cod_fisc_pres = cod_fisc_pres; }
 
     /**
      * Metodo permette di settare il C.F. della persona
