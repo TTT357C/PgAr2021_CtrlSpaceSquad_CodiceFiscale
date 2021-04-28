@@ -9,10 +9,12 @@ import java.io.FileInputStream;
 import java.util.ArrayList;
 
 /**
- * @author Thomas
+ * @author Thomas Causetti
  */
 
 public class Main {
+
+    //Costanti
     public static final String FILENAME_COMUNI = "comuni.xml";
     public static final String FILENAME_PERSONE = "inputPersone.xml";
     public static final String FILENAME_CODICI = "codiciFiscali.xml";
@@ -24,6 +26,9 @@ public class Main {
                                     + " |   0 - Exit                        |\n"
                                     + " |                                   |\n"
                                     + " |___________________________________|\n";
+
+
+    private static ArrayList<Comune> comuni = new ArrayList<>();
 
     public static void main(String[] args) {
 
@@ -40,9 +45,17 @@ public class Main {
                         break;
                     case 1:
                         //letture da file dei comuni
-                        ArrayList<Comune>  comuni = new ArrayList<>();
-                        DocumentBuilderFactory comune_builder = DocumentBuilderFactory.newInstance();
-                        LeggiXML.extractedCity(comuni, comune_builder,FILENAME_COMUNI);
+
+                        XMLInputFactory xmlif = null;
+                        XMLStreamReader xmlr = null;
+                        try {
+                            xmlif = XMLInputFactory.newInstance();
+                            xmlr = xmlif.createXMLStreamReader(FILENAME_COMUNI, new FileInputStream(FILENAME_COMUNI));
+                        } catch (Exception e) {
+                            System.out.println("Errore nell'inizializzazione del reader:");
+                            System.out.println(e.getMessage());
+                        }
+                        LeggiXML.leggiCitta(comuni, xmlr, FILENAME_COMUNI);
 
                         //lettura da file delle persone
                         ArrayList<Persona> persone = new ArrayList<>();
@@ -51,8 +64,8 @@ public class Main {
 
                         //lettura da file dei codici
                         ArrayList <CodiceFiscale> codice_fis = new ArrayList<CodiceFiscale>();
-                        XMLInputFactory xmlif = null;
-                        XMLStreamReader xmlr = null;
+                        xmlif = null;
+                        xmlr = null;
                         try {
                             xmlif = XMLInputFactory.newInstance();
                             xmlr = xmlif.createXMLStreamReader(FILENAME_CODICI, new FileInputStream(FILENAME_CODICI));
@@ -60,7 +73,7 @@ public class Main {
                             System.out.println("Errore nell'inizializzazione del reader:");
                             System.out.println(e.getMessage());
                         }
-                        LeggiXML.extractedCodici(codice_fis, xmlr, FILENAME_CODICI);
+                        LeggiXML.leggiCodici(codice_fis, xmlr, FILENAME_CODICI);
 
                         System.out.println(comuni);
                         System.out.println(persone);
