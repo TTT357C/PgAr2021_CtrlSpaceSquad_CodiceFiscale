@@ -22,8 +22,6 @@ public class LeggiXML {
     public static final String TAG_COMUNE_NASCITA = "comune_nascita";
     public static final String TAG_DATA_NASCITA = "data_nascita";
 
-    private static XMLStreamReader xmlr;
-
     /**
      * @author Thomas Causetti
      */
@@ -59,7 +57,48 @@ public class LeggiXML {
         }
     }
 
-    public static void extractedPersone(ArrayList<Persona> arr, DocumentBuilderFactory dbf,String FILENAME,ArrayList<Comune> comuni) {
+    /**
+     * @author Thomas Causetti
+     */
+    public static void leggiPersone(ArrayList<Persona> persone, XMLStreamReader xmlr,String filename,ArrayList<Comune> comuni) {
+
+        try {
+            while (xmlr.hasNext()) { // continua a leggere finché ha eventi a disposizione
+
+                // switch sul tipo di evento
+                switch (xmlr.getEventType()) {
+
+                    // inizio del documento: stampa che inizia il documento
+                    case XMLStreamConstants.START_DOCUMENT:
+                        System.out.println(" Start Read Doc " + filename);
+                        break;
+
+                    // inizio di un elemento: stampa il nome del tag e i suoi attributi
+                    case XMLStreamConstants.START_ELEMENT:
+                        ArrayList<String> letto=new ArrayList<String>();
+                        leggiDatiXml(letto,xmlr,"persona");
+                        if(letto.size()!=0){
+                            String comune=letto.get(3);
+                            Comune comune1 = null;
+                            for (int j = 0; j < comuni.size() ; j++) {
+                                if (comuni.get(j).getNome().equals(comune)) {
+                                    comune1 = new Comune(comune, comuni.get(j).getCodice());
+                                }
+                            }
+                            persone.add(new Persona(letto.get(0),letto.get(1),(letto.get(2).charAt(0)),LocalDate.parse(letto.get(4)),comune1));
+                        }
+                        break;
+
+                    default:
+                        break;
+                }
+                xmlr.next();
+            }
+        }catch (Exception e){
+            System.err.println(e);
+        }
+        //TODO controlla mattia
+        /*
         try {
             dbf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
             DocumentBuilder db = dbf.newDocumentBuilder();
@@ -89,7 +128,7 @@ public class LeggiXML {
             }
         } catch (ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     /**

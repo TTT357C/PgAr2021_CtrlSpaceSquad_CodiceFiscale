@@ -59,21 +59,29 @@ public class Main {
 
                         //lettura da file delle persone
                         ArrayList<Persona> persone = new ArrayList<>();
-                        DocumentBuilderFactory people_builder = DocumentBuilderFactory.newInstance();
-                        LeggiXML.extractedPersone(persone, people_builder,FILENAME_PERSONE,comuni);
-
-                        //lettura da file dei codici
-                        ArrayList <CodiceFiscale> codice_fis = new ArrayList<CodiceFiscale>();
                         XMLInputFactory xmlif2 = null;
                         XMLStreamReader xmlr2 = null;
                         try {
                             xmlif2 = XMLInputFactory.newInstance();
-                            xmlr2 = xmlif2.createXMLStreamReader(FILENAME_CODICI, new FileInputStream(FILENAME_CODICI));
+                            xmlr2 = xmlif2.createXMLStreamReader(FILENAME_PERSONE, new FileInputStream(FILENAME_PERSONE));
                         } catch (Exception e) {
                             System.out.println("Errore nell'inizializzazione del reader:");
                             System.out.println(e.getMessage());
                         }
-                        LeggiXML.leggiCodici(codice_fis, xmlr2, FILENAME_CODICI);
+                        LeggiXML.leggiPersone(persone, xmlr2,FILENAME_PERSONE,comuni);
+
+                        //lettura da file dei codici
+                        ArrayList <CodiceFiscale> codice_fis = new ArrayList<CodiceFiscale>();
+                        XMLInputFactory xmlif3 = null;
+                        XMLStreamReader xmlr3 = null;
+                        try {
+                            xmlif3 = XMLInputFactory.newInstance();
+                            xmlr3 = xmlif3.createXMLStreamReader(FILENAME_CODICI, new FileInputStream(FILENAME_CODICI));
+                        } catch (Exception e) {
+                            System.out.println("Errore nell'inizializzazione del reader:");
+                            System.out.println(e.getMessage());
+                        }
+                        LeggiXML.leggiCodici(codice_fis, xmlr3, FILENAME_CODICI);
 
                         System.out.println(comuni);
                         System.out.println(persone);
