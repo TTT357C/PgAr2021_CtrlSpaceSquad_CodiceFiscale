@@ -64,16 +64,16 @@ public class Main {
 
                         //lettura da file dei codici
                         ArrayList <CodiceFiscale> codice_fis = new ArrayList<CodiceFiscale>();
-                        xmlif = null;
-                        xmlr = null;
+                        XMLInputFactory xmlif2 = null;
+                        XMLStreamReader xmlr2 = null;
                         try {
-                            xmlif = XMLInputFactory.newInstance();
-                            xmlr = xmlif.createXMLStreamReader(FILENAME_CODICI, new FileInputStream(FILENAME_CODICI));
+                            xmlif2 = XMLInputFactory.newInstance();
+                            xmlr2 = xmlif2.createXMLStreamReader(FILENAME_CODICI, new FileInputStream(FILENAME_CODICI));
                         } catch (Exception e) {
                             System.out.println("Errore nell'inizializzazione del reader:");
                             System.out.println(e.getMessage());
                         }
-                        LeggiXML.leggiCodici(codice_fis, xmlr, FILENAME_CODICI);
+                        LeggiXML.leggiCodici(codice_fis, xmlr2, FILENAME_CODICI);
 
                         System.out.println(comuni);
                         System.out.println(persone);

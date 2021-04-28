@@ -22,7 +22,13 @@ public class LeggiXML {
     public static final String TAG_COMUNE_NASCITA = "comune_nascita";
     public static final String TAG_DATA_NASCITA = "data_nascita";
 
+    private static XMLStreamReader xmlr;
+
+    /**
+     * @author Thomas Causetti
+     */
     public static void leggiCitta(ArrayList<Comune> citta, XMLStreamReader xmlr, String filename) {
+
         try {
             while (xmlr.hasNext()) { // continua a leggere finché ha eventi a disposizione
 
@@ -36,30 +42,11 @@ public class LeggiXML {
 
                     // inizio di un elemento: stampa il nome del tag e i suoi attributi
                     case XMLStreamConstants.START_ELEMENT:
-                        String nome="";
-                        String codice="";
-
-                        switch (xmlr.getLocalName()){
-                            //solo se comune
-                            case "comune":
-                                //va avanti finché non trova un area di testo
-                                do {
-                                    continuaFinoCaratteri(xmlr);
-                                }while(xmlr.getText().trim().length() == 0);
-                                nome=xmlr.getText();
-
-                                //va avanti finché non trova un area di testo
-                                do {
-                                    continuaFinoCaratteri(xmlr);
-                                }while(xmlr.getText().trim().length() == 0);
-                                codice=xmlr.getText();
-
-                            break;
-                            default:
-                            break;
+                        ArrayList<String> letto=new ArrayList<String>();
+                        leggiDatiXml(letto,xmlr,"comune");
+                        if(letto.size()!=0){
+                            citta.add(new Comune(letto.get(0),letto.get(1)));
                         }
-
-                        citta.add(new Comune(nome,codice));
                     break;
 
                     default:
@@ -151,5 +138,46 @@ public class LeggiXML {
         do{
             xmlr.next();
         }while(xmlr.getEventType()!= XMLStreamConstants.CHARACTERS);
+    }
+
+    public static ArrayList<String> leggiDatiXml(ArrayList<String> letto,XMLStreamReader xmlr,String taginput){
+        boolean fine;
+        //solo se stringa
+        if(xmlr.getLocalName().equals(taginput)){
+            fine=false;
+            //va avanti finché non trova un area di testo
+            do {
+                //Continua a leggere finche' non trova un getEventType() == XMLStreamConstants.CHARACTERS
+                try {
+                    continuaFinoCaratteri(xmlr);
+                } catch (XMLStreamException e) {
+                    System.err.println(e);
+                }
+
+                //Se ci sono caratteri li aggiunge ad array
+                if(xmlr.getText().trim().length() > 0) {
+                    letto.add(xmlr.getText());
+                }
+
+                //Avanza di uno (Passa a quello dopo CHARACTERS)
+                try {
+                    xmlr.next();
+                } catch (XMLStreamException e) {
+                    System.out.println(e);
+                }
+
+                //Controlla se e' un END_ELEMENT
+                if(xmlr.getEventType()==XMLStreamConstants.END_ELEMENT){
+
+                    //Controlla se e' l'END_ELEMENT di taginput
+                    if(xmlr.getLocalName().equalsIgnoreCase(taginput)) {
+                        fine = true;
+                    }
+                }
+
+            }while(!fine);
+
+        }
+        return letto;
     }
 }
