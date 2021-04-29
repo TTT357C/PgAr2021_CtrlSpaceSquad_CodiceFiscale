@@ -1,16 +1,14 @@
 package it.unibs.ing.fp.codicifiscali;
 
-import org.w3c.dom.*;
-import org.xml.sax.SAXException;
-import javax.xml.XMLConstants;
-import javax.xml.parsers.*;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-import java.io.*;
 import java.time.LocalDate;
 import java.util.*;
 
+/**
+ * @author Thomas Causetti
+ */
 public class LeggiXML {
 
     //Costanti dei Tag
@@ -23,7 +21,10 @@ public class LeggiXML {
     public static final String TAG_DATA_NASCITA = "data_nascita";
 
     /**
-     * @author Thomas Causetti
+     * Metodo che legge il file xml contenente oggetti di tipo Comune
+     * @param citta
+     * @param xmlr
+     * @param filename
      */
     public static void leggiCitta(ArrayList<Comune> citta, XMLStreamReader xmlr, String filename) {
 
@@ -41,7 +42,7 @@ public class LeggiXML {
                     // inizio di un elemento: stampa il nome del tag e i suoi attributi
                     case XMLStreamConstants.START_ELEMENT:
                         ArrayList<String> letto=new ArrayList<String>();
-                        leggiDatiXml(letto,xmlr,"comune");
+                        leggiOggettiXml(letto,xmlr,"comune");
                         if(letto.size()!=0){
                             citta.add(new Comune(letto.get(0),letto.get(1)));
                         }
@@ -76,7 +77,7 @@ public class LeggiXML {
                     // inizio di un elemento: stampa il nome del tag e i suoi attributi
                     case XMLStreamConstants.START_ELEMENT:
                         ArrayList<String> letto=new ArrayList<String>();
-                        leggiDatiXml(letto,xmlr,"persona");
+                        leggiOggettiXml(letto,xmlr,"persona");
                         if(letto.size()!=0){
                             String comune=letto.get(3);
                             Comune comune1 = null;
@@ -148,19 +149,11 @@ public class LeggiXML {
 
                     // inizio di un elemento: stampa il nome del tag e i suoi attributi
                     case XMLStreamConstants.START_ELEMENT:
-                        System.out.println(" Tag " + xmlr.getLocalName());
-                        //entra per leggere caratteri
-                        xmlr.next();
-                        // content all’interno di un elemento: stampa il testo
-                        // controlla se il testo non contiene solo spazi
-                        if (xmlr.getText().trim().length() > 0)
-                            System.out.println(" -> " + xmlr.getText());
-                        arr.add(new CodiceFiscale(xmlr.getText()));
-                        break;
-
-                    // fine di un elemento: stampa il nome del tag chiuso
-                    case XMLStreamConstants.END_ELEMENT:
-                        System.out.println(" END-Tag " + xmlr.getLocalName());
+                        ArrayList<String> letto=new ArrayList<String>();
+                        leggiOggettiXml(letto,xmlr,"codice");
+                        if(letto.size()!=0){
+                            arr.add(new CodiceFiscale(letto.get(0)));
+                        }
                         break;
 
                     default:
@@ -173,16 +166,30 @@ public class LeggiXML {
         }
     }
 
+    /**
+     * Metodo che continua a ciclare fino al prossimo getEventType() --> XMLStreamConstants.CHARACTERS
+     * @param xmlr
+     * @throws XMLStreamException
+     */
     private static void continuaFinoCaratteri(XMLStreamReader xmlr) throws XMLStreamException {
         do{
             xmlr.next();
         }while(xmlr.getEventType()!= XMLStreamConstants.CHARACTERS);
     }
 
-    public static ArrayList<String> leggiDatiXml(ArrayList<String> letto,XMLStreamReader xmlr,String taginput){
+    /**
+     * Metodo che ritorna un ArrayList di stringhe contenente i diversi attributi di un oggetto,
+     * tag_input è un parametro contenente la stringa del nome del tag xml che contiene tutti gli
+     * attributi dell'oggetto (esempio: comune).
+     * @param letto
+     * @param xmlr
+     * @param tag_input
+     * @return ArrayList<String>
+     */
+    public static ArrayList<String> leggiOggettiXml(ArrayList<String> letto, XMLStreamReader xmlr, String tag_input){
         boolean fine;
         //solo se stringa
-        if(xmlr.getLocalName().equals(taginput)){
+        if(xmlr.getLocalName().equals(tag_input)){
             fine=false;
             //va avanti finché non trova un area di testo
             do {
@@ -209,7 +216,7 @@ public class LeggiXML {
                 if(xmlr.getEventType()==XMLStreamConstants.END_ELEMENT){
 
                     //Controlla se e' l'END_ELEMENT di taginput
-                    if(xmlr.getLocalName().equalsIgnoreCase(taginput)) {
+                    if(xmlr.getLocalName().equalsIgnoreCase(tag_input)) {
                         fine = true;
                     }
                 }
