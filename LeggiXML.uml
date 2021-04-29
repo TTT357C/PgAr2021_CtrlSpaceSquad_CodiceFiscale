@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>it.unibs.ing.fp.codicifiscali.LeggiXML</OriginalElement>
+  <nodes>
+    <node x="-457.0" y="-218.0">it.unibs.ing.fp.codicifiscali.LeggiXML</node>
+  </nodes>
+  <notes />
+  <edges />
+  <settings layout="Hierarchic" zoom="1.0" showDependencies="false" x="90.5" y="23.5" />
+  <SelectedNodes>
+    <node>it.unibs.ing.fp.codicifiscali.LeggiXML</node>
+  </SelectedNodes>
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

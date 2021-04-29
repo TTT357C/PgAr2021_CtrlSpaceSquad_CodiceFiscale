@@ -61,6 +61,7 @@ public class Main {
                         System.out.println(comuni);
                         System.out.println(persone);
                         System.out.println(codice_fis);
+
                         break;
                     default:
                         break;
