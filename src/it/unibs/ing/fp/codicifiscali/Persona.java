@@ -111,7 +111,9 @@ public class Persona {
         this.cod_fiscale = CodiceFiscale.calcoloCodiceFiscale(this);
     }
 
-
+    /**
+     * Metodo che ritorna una stringa con tutti i dati della persona
+     */
     @Override
     public String toString() {
         return "Persona --> nome: " + nome + ", cognome: " + cognome + ", sesso: " + sesso
