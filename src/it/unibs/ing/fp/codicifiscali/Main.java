@@ -55,7 +55,7 @@ public class Main {
                         //lettura da file delle persone
                         ArrayList<Persona> persone = new ArrayList<>();
 
-                        leggixml.leggiPersone(persone, FILENAME_PERSONE,comuni);
+                        leggixml.leggiPersone(persone, FILENAME_PERSONE, comuni);
 
                         //lettura da file dei codici
                         ArrayList <CodiceFiscale> codice_fis = new ArrayList<>();
