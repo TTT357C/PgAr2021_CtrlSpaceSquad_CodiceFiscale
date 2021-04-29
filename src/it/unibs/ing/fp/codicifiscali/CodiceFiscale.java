@@ -129,10 +129,8 @@ public class CodiceFiscale {
         //mese
 
         int mese_int = persona.getData_nascita().getMonthValue();
-        /*for(int i=0; ){
-
-        }*/
-
+        char mese_nascita_char = ARR_MESI_IN_LETTERE[mese_int-1];
+        mese_nascita += mese_nascita_char;
 
         //anno
         int anno_int = persona.getData_nascita().getYear();
