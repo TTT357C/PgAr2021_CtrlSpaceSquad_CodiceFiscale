@@ -337,8 +337,7 @@ public class CodiceFiscale {
     private boolean checkName(String cf) {
         String ctrl_name = cf.substring(3,6);
         boolean seq_name [] =sonoConsonanti(ctrl_name);
-        boolean check_name = false;
-        check_name = isChecksur(ctrl_name, seq_name);
+        boolean check_name = isChecksur(ctrl_name, seq_name);
         return check_name;
     }
 
