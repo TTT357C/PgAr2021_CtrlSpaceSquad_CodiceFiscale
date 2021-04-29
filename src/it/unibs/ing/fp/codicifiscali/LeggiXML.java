@@ -23,15 +23,15 @@ public class LeggiXML {
     //========================================================================================================
     /**
      * Metodo che genera un XMLStreamReader
-     * @param nomefile Stringa contenente il nome del file
+     * @param nome_file Stringa contenente il nome del file
      * @return xmlr XMLStreamReader
      */
-    public XMLStreamReader xmlStreamReaderGenerator(String nomefile){
+    public XMLStreamReader xmlStreamReaderGenerator(String nome_file){
         XMLInputFactory xmlif;
         XMLStreamReader xmlr = null;
         try {
             xmlif = XMLInputFactory.newInstance();
-            xmlr = xmlif.createXMLStreamReader(nomefile, new FileInputStream(nomefile));
+            xmlr = xmlif.createXMLStreamReader(nome_file, new FileInputStream(nome_file));
         } catch (Exception e) {
             System.out.println("Errore nell' inizializzazione del reader:");
             System.out.println(e.getMessage());
@@ -207,8 +207,8 @@ public class LeggiXML {
     //========================================================================================================
     /**
      * Metodo che continua a ciclare fino al prossimo getEventType() --> XMLStreamConstants.CHARACTERS
-     * @param xmlr
-     * @throws XMLStreamException
+     * @param xmlr XMLStreamReader
+     * @throws XMLStreamException throws exception
      */
     private void continuaFinoCaratteri(XMLStreamReader xmlr) throws XMLStreamException {
         do{
@@ -223,7 +223,6 @@ public class LeggiXML {
      * @param letto Arraylist dove vengono salvate le strighe (Passaggio per riferimento)
      * @param xmlr XMLStreamReader attuale
      * @param tag_input e' la stringa del nome del tag xml che contiene tutti gli attributi dell' oggetto (esempio: comune)
-     * @return ArrayList<String>
      */
     public void leggiOggettiXml(ArrayList<String> letto, XMLStreamReader xmlr, String tag_input){
         boolean fine;
