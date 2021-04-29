@@ -2,10 +2,6 @@ package it.unibs.ing.fp.codicifiscali;
 
 import it.unibs.ing.fp.mylib.InputDati;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamReader;
-import java.io.FileInputStream;
 import java.util.ArrayList;
 
 /**
@@ -39,7 +35,7 @@ public class Main {
             System.out.println(MENU);
             scelta = InputDati.leggiIntero(" -->", 0, 1);
 
-            //Nel caso avvenga un eccezione il programma visualizza un messaggio di errore ma non termina l'esecuzione
+            //Nel caso avvenga un eccezione il programma visualizza un messaggio di errore ma non termina l' esecuzione
             try {
                 switch (scelta) {
                     case 0:
