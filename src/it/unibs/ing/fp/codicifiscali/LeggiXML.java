@@ -1,8 +1,10 @@
 package it.unibs.ing.fp.codicifiscali;
 
+import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+import java.io.FileInputStream;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -11,23 +13,27 @@ import java.util.*;
  */
 public class LeggiXML {
 
-    //Costanti dei Tag
-    public static final String TAG_PERSONA = "persona";
-    public static final String TAG_NOME = "nome";
-    public static final String TAG_CODICE = "codice";
-    public static final String TAG_COGNOME = "cognome";
-    public static final String TAG_SESSO = "sesso";
-    public static final String TAG_COMUNE_NASCITA = "comune_nascita";
-    public static final String TAG_DATA_NASCITA = "data_nascita";
+    public static XMLStreamReader xmlStreamReaderGenerator(String nomefile){
+        XMLInputFactory xmlif;
+        XMLStreamReader xmlr = null;
+        try {
+            xmlif = XMLInputFactory.newInstance();
+            xmlr = xmlif.createXMLStreamReader(nomefile, new FileInputStream(nomefile));
+        } catch (Exception e) {
+            System.out.println("Errore nell' inizializzazione del reader:");
+            System.out.println(e.getMessage());
+        }
+        return xmlr;
+    }
 
     /**
      * Metodo che legge il file xml contenente oggetti di tipo Comune
-     * @param citta
-     * @param xmlr
-     * @param filename
+     * @param citta Arraylist comuni
+     * @param filename Nome file
      */
-    public static void leggiCitta(ArrayList<Comune> citta, XMLStreamReader xmlr, String filename) {
+    public static void leggiCitta(ArrayList<Comune> citta, String filename) {
 
+        XMLStreamReader xmlr=xmlStreamReaderGenerator(filename);
         try {
             while (xmlr.hasNext()) { // continua a leggere finché ha eventi a disposizione
 
@@ -41,7 +47,7 @@ public class LeggiXML {
 
                     // inizio di un elemento: stampa il nome del tag e i suoi attributi
                     case XMLStreamConstants.START_ELEMENT:
-                        ArrayList<String> letto=new ArrayList<String>();
+                        ArrayList<String> letto=new ArrayList<>();
                         leggiOggettiXml(letto,xmlr,"comune");
                         if(letto.size()!=0){
                             citta.add(new Comune(letto.get(0),letto.get(1)));
@@ -61,8 +67,9 @@ public class LeggiXML {
     /**
      * @author Thomas Causetti
      */
-    public static void leggiPersone(ArrayList<Persona> persone, XMLStreamReader xmlr,String filename,ArrayList<Comune> comuni) {
+    public static void leggiPersone(ArrayList<Persona> persone, String filename,ArrayList<Comune> comuni) {
 
+        XMLStreamReader xmlr=xmlStreamReaderGenerator(filename);
         try {
             while (xmlr.hasNext()) { // continua a leggere finché ha eventi a disposizione
 
@@ -135,7 +142,9 @@ public class LeggiXML {
     /**
      * @author Thomas Causetti
      */
-    public static void leggiCodici(ArrayList<CodiceFiscale> arr, XMLStreamReader xmlr, String filename) {
+    public static void leggiCodici(ArrayList<CodiceFiscale> arr, String filename) {
+
+        XMLStreamReader xmlr=xmlStreamReaderGenerator(filename);
         try {
             while (xmlr.hasNext()) { // continua a leggere finché ha eventi a disposizione
 

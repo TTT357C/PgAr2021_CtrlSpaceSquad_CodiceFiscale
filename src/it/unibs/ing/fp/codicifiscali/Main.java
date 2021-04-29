@@ -46,42 +46,18 @@ public class Main {
                     case 1:
                         //letture da file dei comuni
 
-                        XMLInputFactory xmlif = null;
-                        XMLStreamReader xmlr = null;
-                        try {
-                            xmlif = XMLInputFactory.newInstance();
-                            xmlr = xmlif.createXMLStreamReader(FILENAME_COMUNI, new FileInputStream(FILENAME_COMUNI));
-                        } catch (Exception e) {
-                            System.out.println("Errore nell'inizializzazione del reader:");
-                            System.out.println(e.getMessage());
-                        }
-                        LeggiXML.leggiCitta(comuni, xmlr, FILENAME_COMUNI);
+
+                        LeggiXML.leggiCitta(comuni, FILENAME_COMUNI);
 
                         //lettura da file delle persone
                         ArrayList<Persona> persone = new ArrayList<>();
-                        XMLInputFactory xmlif2 = null;
-                        XMLStreamReader xmlr2 = null;
-                        try {
-                            xmlif2 = XMLInputFactory.newInstance();
-                            xmlr2 = xmlif2.createXMLStreamReader(FILENAME_PERSONE, new FileInputStream(FILENAME_PERSONE));
-                        } catch (Exception e) {
-                            System.out.println("Errore nell'inizializzazione del reader:");
-                            System.out.println(e.getMessage());
-                        }
-                        LeggiXML.leggiPersone(persone, xmlr2,FILENAME_PERSONE,comuni);
+
+                        LeggiXML.leggiPersone(persone, FILENAME_PERSONE,comuni);
 
                         //lettura da file dei codici
-                        ArrayList <CodiceFiscale> codice_fis = new ArrayList<CodiceFiscale>();
-                        XMLInputFactory xmlif3 = null;
-                        XMLStreamReader xmlr3 = null;
-                        try {
-                            xmlif3 = XMLInputFactory.newInstance();
-                            xmlr3 = xmlif3.createXMLStreamReader(FILENAME_CODICI, new FileInputStream(FILENAME_CODICI));
-                        } catch (Exception e) {
-                            System.out.println("Errore nell'inizializzazione del reader:");
-                            System.out.println(e.getMessage());
-                        }
-                        LeggiXML.leggiCodici(codice_fis, xmlr3, FILENAME_CODICI);
+                        ArrayList <CodiceFiscale> codice_fis = new ArrayList<>();
+
+                        LeggiXML.leggiCodici(codice_fis, FILENAME_CODICI);
 
                         System.out.println(comuni);
                         System.out.println(persone);
@@ -97,8 +73,6 @@ public class Main {
             }
 
         }while(scelta!=0);
-
-
 
     }
 
