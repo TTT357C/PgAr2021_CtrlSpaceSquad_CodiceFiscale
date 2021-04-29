@@ -26,6 +26,8 @@ public class Main {
                                     + " |   0 - Exit                        |\n"
                                     + " |                                   |\n"
                                     + " |___________________________________|\n";
+    public static final String ARRIVEDERCI = "\n _ Arrivederci _____________ \n";
+    public static final String ERRORE = " Errore Ritorno a Menu ";
 
 
     private static ArrayList<Comune> comuni = new ArrayList<>();
@@ -41,23 +43,24 @@ public class Main {
             try {
                 switch (scelta) {
                     case 0:
-                        System.out.println("\n _ Arrivederci _____________ \n");
+                        System.out.println(ARRIVEDERCI);
                         break;
                     case 1:
                         //letture da file dei comuni
 
-
-                        LeggiXML.leggiCitta(comuni, FILENAME_COMUNI);
+                        //Creo oggetto LeggiXML
+                        LeggiXML leggixml=new LeggiXML();
+                        leggixml.leggiCitta(comuni, FILENAME_COMUNI);
 
                         //lettura da file delle persone
                         ArrayList<Persona> persone = new ArrayList<>();
 
-                        LeggiXML.leggiPersone(persone, FILENAME_PERSONE,comuni);
+                        leggixml.leggiPersone(persone, FILENAME_PERSONE,comuni);
 
                         //lettura da file dei codici
                         ArrayList <CodiceFiscale> codice_fis = new ArrayList<>();
 
-                        LeggiXML.leggiCodici(codice_fis, FILENAME_CODICI);
+                        leggixml.leggiCodici(codice_fis, FILENAME_CODICI);
 
                         System.out.println(comuni);
                         System.out.println(persone);
@@ -67,7 +70,7 @@ public class Main {
                         break;
                 }
             }catch (Exception e){
-                System.err.println(" Errore Ritorno a Menu ");
+                System.err.println(ERRORE);
                 System.err.println(" ("+e+")");
                 System.out.println("\n");
             }

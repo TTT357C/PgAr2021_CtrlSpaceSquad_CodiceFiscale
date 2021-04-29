@@ -13,7 +13,20 @@ import java.util.*;
  */
 public class LeggiXML {
 
-    public static XMLStreamReader xmlStreamReaderGenerator(String nomefile){
+    //========================================================================================================
+    //Costanti
+    private static final String READ_DOC = " Start Read Doc ";
+    private static final String CODICE = "codice";
+    private static final String PERSONA = "persona";
+    private static final String COMUNE = "comune";
+
+    //========================================================================================================
+    /**
+     * Metodo che genera un XMLStreamReader
+     * @param nomefile Stringa contenente il nome del file
+     * @return xmlr XMLStreamReader
+     */
+    public XMLStreamReader xmlStreamReaderGenerator(String nomefile){
         XMLInputFactory xmlif;
         XMLStreamReader xmlr = null;
         try {
@@ -26,29 +39,31 @@ public class LeggiXML {
         return xmlr;
     }
 
+    //========================================================================================================
     /**
      * Metodo che legge il file xml contenente oggetti di tipo Comune
      * @param citta Arraylist comuni
      * @param filename Nome file
      */
-    public static void leggiCitta(ArrayList<Comune> citta, String filename) {
+    public void leggiCitta(ArrayList<Comune> citta, String filename) {
 
         XMLStreamReader xmlr=xmlStreamReaderGenerator(filename);
         try {
             while (xmlr.hasNext()) { // continua a leggere finché ha eventi a disposizione
 
+                //--- Inizio Switch --------------------------------------
                 // switch sul tipo di evento
                 switch (xmlr.getEventType()) {
 
                     // inizio del documento: stampa che inizia il documento
                     case XMLStreamConstants.START_DOCUMENT:
-                        System.out.println(" Start Read Doc " + filename);
-                        break;
+                        System.out.println(READ_DOC + filename);
+                    break;
 
                     // inizio di un elemento: stampa il nome del tag e i suoi attributi
                     case XMLStreamConstants.START_ELEMENT:
                         ArrayList<String> letto=new ArrayList<>();
-                        leggiOggettiXml(letto,xmlr,"comune");
+                        leggiOggettiXml(letto,xmlr, COMUNE);
                         if(letto.size()!=0){
                             citta.add(new Comune(letto.get(0),letto.get(1)));
                         }
@@ -57,6 +72,8 @@ public class LeggiXML {
                     default:
                     break;
                 }
+                //--- Fine Switch --------------------------------------
+
                 xmlr.next();
             }
         }catch (Exception e){
@@ -64,27 +81,30 @@ public class LeggiXML {
         }
     }
 
+
+    //========================================================================================================
     /**
      * @author Thomas Causetti
      */
-    public static void leggiPersone(ArrayList<Persona> persone, String filename,ArrayList<Comune> comuni) {
+    public void leggiPersone(ArrayList<Persona> persone, String filename,ArrayList<Comune> comuni) {
 
         XMLStreamReader xmlr=xmlStreamReaderGenerator(filename);
         try {
             while (xmlr.hasNext()) { // continua a leggere finché ha eventi a disposizione
 
+                //--- Inizio Switch --------------------------------------
                 // switch sul tipo di evento
                 switch (xmlr.getEventType()) {
 
                     // inizio del documento: stampa che inizia il documento
                     case XMLStreamConstants.START_DOCUMENT:
-                        System.out.println(" Start Read Doc " + filename);
-                        break;
+                        System.out.println(READ_DOC + filename);
+                    break;
 
                     // inizio di un elemento: stampa il nome del tag e i suoi attributi
                     case XMLStreamConstants.START_ELEMENT:
-                        ArrayList<String> letto=new ArrayList<String>();
-                        leggiOggettiXml(letto,xmlr,"persona");
+                        ArrayList<String> letto=new ArrayList<>();
+                        leggiOggettiXml(letto,xmlr, PERSONA);
                         if(letto.size()!=0){
                             String comune=letto.get(3);
                             Comune comune1 = null;
@@ -95,11 +115,13 @@ public class LeggiXML {
                             }
                             persone.add(new Persona(letto.get(0),letto.get(1),(letto.get(2).charAt(0)),LocalDate.parse(letto.get(4)),comune1));
                         }
-                        break;
+                    break;
 
                     default:
-                        break;
+                    break;
                 }
+                //--- Fine Switch --------------------------------------
+
                 xmlr.next();
             }
         }catch (Exception e){
@@ -139,35 +161,41 @@ public class LeggiXML {
         }*/
     }
 
+
+    //========================================================================================================
     /**
      * @author Thomas Causetti
      */
-    public static void leggiCodici(ArrayList<CodiceFiscale> arr, String filename) {
+    public void leggiCodici(ArrayList<CodiceFiscale> arr, String filename) {
 
         XMLStreamReader xmlr=xmlStreamReaderGenerator(filename);
         try {
             while (xmlr.hasNext()) { // continua a leggere finché ha eventi a disposizione
 
+                //--- Inizio Switch --------------------------------------
                 // switch sul tipo di evento
                 switch (xmlr.getEventType()) {
 
                     // inizio del documento: stampa che inizia il documento
                     case XMLStreamConstants.START_DOCUMENT:
-                        System.out.println(" Start Read Doc " + filename);
-                        break;
+                        System.out.println(READ_DOC + filename);
+                    break;
 
                     // inizio di un elemento: stampa il nome del tag e i suoi attributi
                     case XMLStreamConstants.START_ELEMENT:
-                        ArrayList<String> letto=new ArrayList<String>();
-                        leggiOggettiXml(letto,xmlr,"codice");
+                        ArrayList<String> letto=new ArrayList<>();
+                        leggiOggettiXml(letto,xmlr,CODICE);
+
                         if(letto.size()!=0){
                             arr.add(new CodiceFiscale(letto.get(0)));
                         }
-                        break;
+                    break;
 
                     default:
-                        break;
+                    break;
                 }
+                //--- Fine Switch --------------------------------------
+
                 xmlr.next();
             }
         }catch (Exception e){
@@ -175,27 +203,29 @@ public class LeggiXML {
         }
     }
 
+
+    //========================================================================================================
     /**
      * Metodo che continua a ciclare fino al prossimo getEventType() --> XMLStreamConstants.CHARACTERS
      * @param xmlr
      * @throws XMLStreamException
      */
-    private static void continuaFinoCaratteri(XMLStreamReader xmlr) throws XMLStreamException {
+    private void continuaFinoCaratteri(XMLStreamReader xmlr) throws XMLStreamException {
         do{
             xmlr.next();
         }while(xmlr.getEventType()!= XMLStreamConstants.CHARACTERS);
     }
 
+
+    //========================================================================================================
     /**
-     * Metodo che ritorna un ArrayList di stringhe contenente i diversi attributi di un oggetto,
-     * tag_input è un parametro contenente la stringa del nome del tag xml che contiene tutti gli
-     * attributi dell'oggetto (esempio: comune).
-     * @param letto
-     * @param xmlr
-     * @param tag_input
+     * Metodo che ritorna un ArrayList di stringhe contenente i diversi attributi di un oggetto.
+     * @param letto Arraylist dove vengono salvate le strighe (Passaggio per riferimento)
+     * @param xmlr XMLStreamReader attuale
+     * @param tag_input e' la stringa del nome del tag xml che contiene tutti gli attributi dell' oggetto (esempio: comune)
      * @return ArrayList<String>
      */
-    public static ArrayList<String> leggiOggettiXml(ArrayList<String> letto, XMLStreamReader xmlr, String tag_input){
+    public void leggiOggettiXml(ArrayList<String> letto, XMLStreamReader xmlr, String tag_input){
         boolean fine;
         //solo se stringa
         if(xmlr.getLocalName().equals(tag_input)){
@@ -224,7 +254,7 @@ public class LeggiXML {
                 //Controlla se e' un END_ELEMENT
                 if(xmlr.getEventType()==XMLStreamConstants.END_ELEMENT){
 
-                    //Controlla se e' l'END_ELEMENT di taginput
+                    //Controlla se e' l'END_ELEMENT di tag_input
                     if(xmlr.getLocalName().equalsIgnoreCase(tag_input)) {
                         fine = true;
                     }
@@ -233,6 +263,6 @@ public class LeggiXML {
             }while(!fine);
 
         }
-        return letto;
     }
+    //========================================================================================================
 }
