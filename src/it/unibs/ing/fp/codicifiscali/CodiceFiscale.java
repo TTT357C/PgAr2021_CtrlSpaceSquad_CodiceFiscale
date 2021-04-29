@@ -62,6 +62,35 @@ public class CodiceFiscale {
         int sommatoria_valori_dispari=0;
         int sommatoria_valori=0;
 
+        //cognome
+
+        cognome_estratto+=trovaVocaliOConsonanti(ARR_CONSONANTI, persona.getCognome());
+
+        /*
+        for(int i=0; i<this.getCognome().length(); i++){
+            char temp1 = this.getCognome().charAt(i);
+            for(int j=0; j<ARR_CONSONANTI.length; j++) {
+                char temp2 = ARR_CONSONANTI[j];
+                if (temp1 == temp2) {
+                    cognome_estratto += temp1;
+                }
+            }
+        }*/
+
+        cognome_estratto+=trovaVocaliOConsonanti(ARR_VOCALI, persona.getCognome());
+        /*
+        for(int i=0; i<this.getCognome().length(); i++){
+            char temp1 = this.getCognome().charAt(i);
+            for(int j=0; j<ARR_VOCALI.length; j++){
+                char temp2 = ARR_VOCALI[j];
+                if(temp1==temp2){
+                    cognome_estratto += temp1;
+                }
+            }
+        }*/
+
+        cod_fiscale_str += cognome_estratto.substring(0, 4);
+
         //nome
 
         //TODO Mirko controlla
@@ -92,37 +121,24 @@ public class CodiceFiscale {
             }
         }
         */
+
         cod_fiscale_str += nome_estratto.substring(0, 4);
 
+        //anno
+
+        int anno_int = persona.getData_nascita().getYear();
+        String anno_string="";
+        anno_string = anno_string+anno_int;
+        anno_nascita = anno_string.substring(3, 5);
+        cod_fiscale_str += anno_nascita;
+
+        //mese
+
+        int mese_int = persona.getData_nascita().getMonthValue();
+        char mese_nascita_char = ARR_MESI_IN_LETTERE[mese_int-1];
+        mese_nascita += mese_nascita_char;
 
 
-        //cognome
-
-        cognome_estratto+=trovaVocaliOConsonanti(ARR_CONSONANTI, persona.getCognome());
-
-        /*
-        for(int i=0; i<this.getCognome().length(); i++){
-            char temp1 = this.getCognome().charAt(i);
-            for(int j=0; j<ARR_CONSONANTI.length; j++) {
-                char temp2 = ARR_CONSONANTI[j];
-                if (temp1 == temp2) {
-                    cognome_estratto += temp1;
-                }
-            }
-        }*/
-
-        cognome_estratto+=trovaVocaliOConsonanti(ARR_VOCALI, persona.getCognome());
-        /*
-        for(int i=0; i<this.getCognome().length(); i++){
-            char temp1 = this.getCognome().charAt(i);
-            for(int j=0; j<ARR_VOCALI.length; j++){
-                char temp2 = ARR_VOCALI[j];
-                if(temp1==temp2){
-                    cognome_estratto += temp1;
-                }
-            }
-        }*/
-        cod_fiscale_str += cognome_estratto.substring(0, 4);
 
         //giorno
         int giorno_int = persona.getData_nascita().getDayOfMonth();
@@ -132,28 +148,15 @@ public class CodiceFiscale {
         giorno_nascita = giorno_nascita+giorno_int;
         cod_fiscale_str += giorno_nascita;
 
-        //mese
-
-        int mese_int = persona.getData_nascita().getMonthValue();
-        char mese_nascita_char = ARR_MESI_IN_LETTERE[mese_int-1];
-        mese_nascita += mese_nascita_char;
-
-        //anno
-        int anno_int = persona.getData_nascita().getYear();
-        String anno_string="";
-        anno_string = anno_string+anno_int;
-        anno_nascita = anno_string.substring(3, 5);
-        cod_fiscale_str += anno_nascita;
 
         //comune
         comune_nascita = persona.getLuogo_nascita().getCodice();
-
 
         cod_fiscale_str += comune_nascita;
 
         //calcolo carattere controllo
 
-        //caratteri pari
+        //caratteri in posizioni pari
 
         for(int i=0; i<cod_fiscale_str.length(); i=i+2){
             boolean trovato= false;
@@ -179,7 +182,7 @@ public class CodiceFiscale {
             }
         }
 
-        //caratteri dispari
+        //caratteri in posizioni dispari
 
         for(int i=1; i<cod_fiscale_str.length(); i=i+2){
 
