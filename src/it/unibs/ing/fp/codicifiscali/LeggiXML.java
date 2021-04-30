@@ -113,6 +113,15 @@ public class LeggiXML {
                                     comune1 = new Comune(comune, comuni.get(j).getCodice());
                                 }
                             }
+
+                            //Se non presente in lista comuni italiani --> comune = Estero, codice = Z e tre num random
+                            if(comune1 == null){
+
+                                Random rand = new Random();
+                                int temp = ((999-100) + 1);
+                                comune1 = new Comune("Estero", "Z"+((rand.nextInt(temp))+100));
+                            }
+
                             persone.add(new Persona(letto.get(0),letto.get(1),(letto.get(2).charAt(0)),LocalDate.parse(letto.get(4)),comune1));
                         }
                     break;
@@ -127,38 +136,7 @@ public class LeggiXML {
         }catch (Exception e){
             System.err.println(e);
         }
-        //TODO controlla mattia
-        /*
-        try {
-            dbf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
-            DocumentBuilder db = dbf.newDocumentBuilder();
-            Document doc = db.parse(new File(FILENAME));
-            doc.getDocumentElement().normalize();
-            NodeList list = doc.getElementsByTagName(TAG_PERSONA);
-            for (int i = 0; i < list.getLength(); i++) {
-                Node node = list.item(i);
-                if (node.getNodeType() == Node.ELEMENT_NODE) {
-                    Element element = (Element) node;
-                    String firstname = element.getElementsByTagName(TAG_NOME).item(0).getTextContent();
-                    String lastname = element.getElementsByTagName(TAG_COGNOME).item(0).getTextContent();
-                    String sesso = element.getElementsByTagName(TAG_SESSO).item(0).getTextContent();
-                    String comune = element.getElementsByTagName(TAG_COMUNE_NASCITA).item(0).getTextContent();
-                    String bday = element.getElementsByTagName(TAG_DATA_NASCITA).item(0).getTextContent();
-                    char sex = sesso.charAt(0);
-                    LocalDate date1 = LocalDate.parse(bday);
-                    Comune comune1 = null;
 
-                    for (int j = 0; j < comuni.size() ; j++) {
-                        if (comuni.get(j).getNome().equals(comune)) {
-                            comune1 = new Comune(comune, comuni.get(j).getCodice());
-                        }
-                    }
-                    arr.add(new Persona(firstname,lastname,sex,date1,comune1));
-                }
-            }
-        } catch (ParserConfigurationException | SAXException | IOException e) {
-            e.printStackTrace();
-        }*/
     }
 
 
