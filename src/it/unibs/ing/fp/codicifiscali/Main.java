@@ -24,6 +24,7 @@ public class Main {
                                     + " |___________________________________|\n";
     public static final String ARRIVEDERCI = "\n _ Arrivederci _____________ \n";
     public static final String ERRORE = " Errore Ritorno a Menu ";
+    public static final String FILE_SCRITTO_CORRETTAMENTE = "\n File Scritto Correttamente";
 
 
     private static ArrayList<Comune> comuni = new ArrayList<>();
@@ -57,14 +58,11 @@ public class Main {
                             persone.get(i).setCodiceFiscale();
                         }
 
+
                         //lettura da file dei codici
                         ArrayList <CodiceFiscale> codice_fis = new ArrayList<>();
 
                         leggixml.leggiCodici(codice_fis, FILENAME_CODICI);
-
-                        System.out.println(comuni);
-                        System.out.println(persone);
-                        System.out.println(codice_fis);
 
                         ArrayList <CodiceFiscale> codice_fis_invalidi = new ArrayList<>();
                         ArrayList <CodiceFiscale> codice_fis_validi = new ArrayList<>();
@@ -92,12 +90,13 @@ public class Main {
                             }
                         }
 
+
                         //Array per Scrivi XML --> codice_fis_invalidi e codice_fis_val_spa
 
                         //ScriviXML
                         ScriviXML scriviXml = new ScriviXML();
                         scriviXml.scriviXML(persone,codice_fis_invalidi,codice_fis_val_spa);
-                        System.out.println(" File Scritto Correttamente");
+                        System.out.println(FILE_SCRITTO_CORRETTAMENTE);
 
                         break;
                     default:

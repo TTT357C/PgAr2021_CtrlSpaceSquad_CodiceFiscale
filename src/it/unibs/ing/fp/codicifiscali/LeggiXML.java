@@ -19,6 +19,18 @@ public class LeggiXML {
     private static final String CODICE = "codice";
     private static final String PERSONA = "persona";
     private static final String COMUNE = "comune";
+    public static final String ESTERO = "Estero";
+    public static final int MAX = 999;
+    public static final int MIN = 100;
+    public static final String ERRORE_NELL_INIZ = "Errore nell' inizializzazione del reader:";
+    public static final int INDEX_NOME_C = 0;
+    public static final int INDEX_CODICE_C = 1;
+    public static final int INDEX_COMUNE_P = 3;
+    public static final int INDEX_NOME_P = 0;
+    public static final int INDEX_COGNOME_P = 1;
+    public static final int INDEX_SESSO_P = 2;
+    public static final int INDEX_DATA_P = 4;
+    public static final int INDEX_CODICEF_C = 0;
 
     //========================================================================================================
     /**
@@ -33,7 +45,7 @@ public class LeggiXML {
             xmlif = XMLInputFactory.newInstance();
             xmlr = xmlif.createXMLStreamReader(nome_file, new FileInputStream(nome_file));
         } catch (Exception e) {
-            System.out.println("Errore nell' inizializzazione del reader:");
+            System.out.println(ERRORE_NELL_INIZ);
             System.out.println(e.getMessage());
         }
         return xmlr;
@@ -65,7 +77,7 @@ public class LeggiXML {
                         ArrayList<String> letto=new ArrayList<>();
                         leggiOggettiXml(letto,xmlr, COMUNE);
                         if(letto.size()!=0){
-                            citta.add(new Comune(letto.get(0),letto.get(1)));
+                            citta.add(new Comune(letto.get(INDEX_NOME_C),letto.get(INDEX_CODICE_C)));
                         }
                     break;
 
@@ -106,7 +118,7 @@ public class LeggiXML {
                         ArrayList<String> letto=new ArrayList<>();
                         leggiOggettiXml(letto,xmlr, PERSONA);
                         if(letto.size()!=0){
-                            String comune=letto.get(3);
+                            String comune=letto.get(INDEX_COMUNE_P);
                             Comune comune1 = null;
                             for (int j = 0; j < comuni.size() ; j++) {
                                 if (comuni.get(j).getNome().equals(comune)) {
@@ -118,11 +130,11 @@ public class LeggiXML {
                             if(comune1 == null){
 
                                 Random rand = new Random();
-                                int temp = ((999-100) + 1);
-                                comune1 = new Comune("Estero", "Z"+((rand.nextInt(temp))+100));
+                                int temp = ((MAX-MIN) + 1);
+                                comune1 = new Comune(ESTERO, "Z"+((rand.nextInt(temp))+MIN));
                             }
 
-                            persone.add(new Persona(letto.get(0),letto.get(1),(letto.get(2).charAt(0)),LocalDate.parse(letto.get(4)),comune1));
+                            persone.add(new Persona(letto.get(INDEX_NOME_P),letto.get(INDEX_COGNOME_P),(letto.get(INDEX_SESSO_P).charAt(0)),LocalDate.parse(letto.get(INDEX_DATA_P)),comune1));
                         }
                     break;
 
@@ -165,7 +177,7 @@ public class LeggiXML {
                         leggiOggettiXml(letto,xmlr,CODICE);
 
                         if(letto.size()!=0){
-                            arr.add(new CodiceFiscale(letto.get(0)));
+                            arr.add(new CodiceFiscale(letto.get(INDEX_CODICEF_C)));
                         }
                     break;
 

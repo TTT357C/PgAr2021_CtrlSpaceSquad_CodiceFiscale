@@ -112,11 +112,14 @@ public class CodiceFiscale {
 
         //calcolo carattere controllo
 
-
+        //Per il codice fiscale si parte a contare da 1, nel charAt abbiamo messo i-1 in questo modo non va in overflow
         for(int i=1;i<=cod_fiscale_str.length();i++){
-            //se pari
+
             for(int j=0;j<ARR_ALFABETO_NUM.length;j++) {
+
+                //Calcola sommatoria_valori cercando il valore del carattere in posizione [i]
                 if(ARR_ALFABETO_NUM[j]==cod_fiscale_str.charAt(i-1)) {
+                    //se pari
                     if (i % 2 == 0) {
                         sommatoria_valori+=ARR_VALORI_CHAR_PARI[j];
                     } else {
@@ -437,7 +440,6 @@ public class CodiceFiscale {
      * @return Ritorna true se è una vocale false altrimenti
      */
     private static boolean isVocale(char charSequence) {
-        // TODO Auto-generated method stub
         for (int i = 0; i < ARR_VOCALI.length; i++) {
             if( charSequence == ARR_VOCALI[i]) {
                 return true;
