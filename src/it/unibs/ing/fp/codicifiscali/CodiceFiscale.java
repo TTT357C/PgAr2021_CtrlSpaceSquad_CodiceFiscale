@@ -243,21 +243,6 @@ public class CodiceFiscale {
     }
 
     /**
-     * Metodo che permette di controllare se il codice fiscale è giusto
-     * @author Thomas Causetti
-     * @return Ritorna true se il codice fiscale è valido altrimenti falso
-     */
-    public static boolean controlloCodFiscale(Persona persona){
-        //TODO sistema
-        if (persona.getCod_fiscale().equals(calcoloCodiceFiscale(persona))){
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
-
-    /**
      * Metodo che controlla la validità di un codice fiscale
      * @return Ritorna True se il codice fiscale è valido, false altrimenti
      * @author Mattia Visini

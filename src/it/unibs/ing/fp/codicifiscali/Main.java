@@ -62,6 +62,37 @@ public class Main {
                         System.out.println(persone);
                         System.out.println(codice_fis);
 
+                        ArrayList <CodiceFiscale> codice_fis_invalidi = new ArrayList<>();
+                        ArrayList <CodiceFiscale> codice_fis_validi = new ArrayList<>();
+
+                        for (int i=0;i<codice_fis.size();i++){
+                            if (codice_fis.get(i).validitaCodFiscale()){
+                                codice_fis_validi.add(codice_fis.get(i));
+                            }
+                            else{
+                                codice_fis_invalidi.add(codice_fis.get(i));
+                            }
+                        }
+
+                        ArrayList <CodiceFiscale> codice_fis_val_spa = new ArrayList<>();
+                        ArrayList <CodiceFiscale> codice_fis_val_acc = new ArrayList<>();
+                        codice_fis_val_spa = codice_fis_validi;
+
+
+                        for (int i=0;i<persone.size();i++) {
+                            for (int j=0;j<codice_fis_validi.size();j++){
+                                if(codice_fis_validi.get(j).equals(persone.get(i).getCod_fiscale())){
+                                    codice_fis_val_acc.add(codice_fis_validi.get(j));
+                                    codice_fis_val_spa.remove(j);
+                                }
+                            }
+                        }
+
+                        //Array per Scrivi XML --> codice_fis_invalidi e codice_fis_val_spa
+
+                        ScriviXML scriviXml = new ScriviXML();
+                        scriviXml.scriviXML(persone,codice_fis_invalidi,codice_fis_val_spa);
+
                         break;
                     default:
                         break;

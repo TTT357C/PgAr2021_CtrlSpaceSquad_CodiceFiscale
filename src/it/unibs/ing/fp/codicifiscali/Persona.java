@@ -15,7 +15,6 @@ public class Persona {
     private char sesso;
     private LocalDate data_nascita;
     private Comune luogo_nascita;
-    private Boolean cod_fisc_pres;
     private CodiceFiscale cod_fiscale;
 
     /**
@@ -32,7 +31,6 @@ public class Persona {
         this.sesso = sesso;
         this.data_nascita = data_nascita;
         this.luogo_nascita = luogo_nascita;
-        this.cod_fisc_pres = false; //non ancora stato controllato
     }
 
     /**
@@ -92,18 +90,6 @@ public class Persona {
     }
 
     /**
-     * Metodo che ritorna una variabile booleana, true se il codice fiscale è presente nel file codiciFiscali.xml
-     * @return Ritorna variabile booleana
-     */
-    public Boolean getCod_fisc_pres() { return cod_fisc_pres; }
-
-    /**
-     * Metodo che permette di settare una variabile booleana, true se il codice fiscale è presente nel file codiciFiscali.xml
-     * @param cod_fisc_pres
-     */
-    public void setCod_fisc_pres(Boolean cod_fisc_pres) { this.cod_fisc_pres = cod_fisc_pres; }
-
-    /**
      * Metodo permette di settare il C.F. della persona
      * utilizzando il valore restituito dalla funzione calcoloCodiceFiscale
      */
@@ -118,6 +104,6 @@ public class Persona {
     public String toString() {
         return "Persona --> nome: " + nome + ", cognome: " + cognome + ", sesso: " + sesso
                 + ", data_nascita: " + data_nascita + ", luogo_nascita: " + luogo_nascita
-                + ", cod_fisc_pres: " + cod_fisc_pres + ", cod_fiscale: " + cod_fiscale + "\n";
+                + ", cod_fiscale: " + cod_fiscale + "\n";
     }
 }
