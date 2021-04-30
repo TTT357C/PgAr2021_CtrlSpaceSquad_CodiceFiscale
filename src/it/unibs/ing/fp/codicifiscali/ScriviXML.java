@@ -1,13 +1,27 @@
 package it.unibs.ing.fp.codicifiscali;
 
-import javax.swing.text.Document;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+
+import org.w3c.dom.Document;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
-import java.io.FileOutputStream;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.io.*;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class ScriviXML {
+
+    public static final String CODICI_PERSONE = "codiciPersone.xml";
 
     /**
      * metodo per creazione del file XML
@@ -27,7 +41,7 @@ public class ScriviXML {
         try{
 
             xmlof = XMLOutputFactory.newInstance();
-            xmlw = xmlof.createXMLStreamWriter(new FileOutputStream("codiciPersone.xml"), "utf-8");
+            xmlw = xmlof.createXMLStreamWriter(new FileOutputStream(CODICI_PERSONE), "utf-8");
             xmlw.writeStartDocument("utf-8", "1.0");
 
         } catch (Exception e){
@@ -41,49 +55,58 @@ public class ScriviXML {
 
         try{
 
-            xmlw.writeStartElement("programmaArnaldo");
+            xmlw.writeStartElement("output");
             xmlw.writeComment("INIZIO LISTA");
+
+            xmlw.writeStartElement("persone");
+            xmlw.writeAttribute("numero", persona.size()+"");
 
             for(int i=0; i<persona.size(); i++){
 
                 //tag persona
 
-                xmlw.writeStartElement("persona: ");
-                xmlw.writeAttribute("id: ", Integer.toString(i));
+                xmlw.writeStartElement("persona");
+                xmlw.writeAttribute("id", i+"");
 
                 //tag nome
 
-                xmlw.writeStartElement("nome: ");
+                xmlw.writeStartElement("nome");
                 xmlw.writeCharacters(persona.get(i).getNome());
                 xmlw.writeEndElement();
 
                 //tag cognome
 
-                xmlw.writeStartElement("cognome: ");
+                xmlw.writeStartElement("cognome");
                 xmlw.writeCharacters(persona.get(i).getCognome());
+                xmlw.writeEndElement();
+
+                //tag sesso
+
+                xmlw.writeStartElement("sesso");
+                xmlw.writeCharacters(persona.get(i).getSesso()+"");
                 xmlw.writeEndElement();
 
                 //tag comune di nascita
 
-                xmlw.writeStartElement("comune_nascita: ");
+                xmlw.writeStartElement("comune_nascita");
                 xmlw.writeCharacters(persona.get(i).getLuogo_nascita().getNome());
                 xmlw.writeEndElement();
 
                 //tag data nascita
 
-                xmlw.writeStartElement("data_nascita: ");
-                xmlw.writeCharacters(persona.get(i).getData_nascita().format(DateTimeFormatter.ofPattern("YYYY-MM-DD")));
+                xmlw.writeStartElement("data_nascita");
+                xmlw.writeCharacters(persona.get(i).getData_nascita().format(DateTimeFormatter.ofPattern("YYYY-MM-dd")));
                 xmlw.writeEndElement();
 
                 //tag codice fiscale
 
-                xmlw.writeStartElement("cod_fiscale: ");
+                xmlw.writeStartElement("cod_fiscale");
 
                 if(persona.get(i).getCod_fiscale()!= null){
-                    xmlw.writeCharacters(String.valueOf(persona.get(i).getCod_fiscale()));
+                    xmlw.writeCharacters(persona.get(i).getCod_fiscale().getCodice_fiscale());
                 }
                 else{
-                    xmlw.writeCharacters("CODICE ASSENTE");
+                    xmlw.writeCharacters("ASSENTE");
                 }
 
                 xmlw.writeEndElement();
@@ -94,47 +117,21 @@ public class ScriviXML {
 
             }
 
+            //chiusura tag persone
+
+            xmlw.writeEndElement();
+
             //apertura tag codici
 
             xmlw.writeStartElement("codici");
 
             //apertura tag codici invalidi
 
-            xmlw.writeStartElement("invalidi");
-            xmlw.writeAttribute("numero = ", Integer.toString((codici_invalidi.size()-1)));
-
-            for(int i=0; i<codici_invalidi.size(); i++){
-
-                //tag codice invalidato
-
-                xmlw.writeStartElement("codice");
-                xmlw.writeCharacters(codici_invalidi.get(i).toString());
-                xmlw.writeEndElement();
-
-            }
-
-            //chiusura tag codici invalidi
-
-            xmlw.writeEndElement();
+            scriviCodici(codici_invalidi,xmlw,"invalidi");
 
             //apertura tag codici spaiati
 
-            xmlw.writeStartElement("spaiati");
-            xmlw.writeAttribute("numero = ", Integer.toString((codici_spaiati.size()-1)));
-
-            for(int i=0; i<codici_spaiati.size(); i++){
-
-                //tag codice spaiato
-
-                xmlw.writeStartElement("codice");
-                xmlw.writeCharacters(codici_spaiati.get(i).toString());
-                xmlw.writeEndElement();
-
-            }
-
-            //chiusura tag codici spaiati
-
-            xmlw.writeEndElement();
+            scriviCodici(codici_spaiati,xmlw,"spaiati");
 
             //chiusura tag codici
 
@@ -156,6 +153,14 @@ public class ScriviXML {
 
             xmlw.close();
 
+            //Crea lo stesso file ma indentato.
+            try {
+                indentaFile();
+            }catch (Exception e){
+                System.err.println(e);
+            }
+
+
         } catch(Exception e){
 
             System.out.println("Errore nella scrittura: ");
@@ -163,5 +168,72 @@ public class ScriviXML {
 
         }
 
+    }
+
+    public void indentaFile(){
+        try {
+
+            DocumentBuilderFactory dbFactory;
+            DocumentBuilder dBuilder;
+            Document original = null;
+
+            try {
+                dbFactory = DocumentBuilderFactory.newInstance();
+                dBuilder = dbFactory.newDocumentBuilder();
+
+                //leggo il file originale
+                original = dBuilder.parse(new InputSource(new InputStreamReader(new FileInputStream(CODICI_PERSONE))));
+            } catch (SAXException | IOException | ParserConfigurationException e) {
+                e.printStackTrace();
+            }
+
+            StringWriter stringWriter = new StringWriter();
+            StreamResult xmlOutput = new StreamResult(stringWriter);
+            TransformerFactory tf = TransformerFactory.newInstance();
+
+            //Transformer per indentazione
+            Transformer transformer = tf.newTransformer();
+            transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+
+            //Gli passo cio' che ho letto dal file originale
+            transformer.transform(new DOMSource(original), xmlOutput);
+
+            //Dopo formattazione scrivo su file
+            FileWriter writer;
+            writer=new FileWriter("codiciPersoneFormattato.xml");
+
+            BufferedWriter bufferedWriter;
+            bufferedWriter=new BufferedWriter (writer);
+
+            bufferedWriter.write(xmlOutput.getWriter().toString());
+
+            bufferedWriter.flush();
+            bufferedWriter.close();
+
+        } catch (Exception ex) {
+            System.err.println(ex);
+        }
+    }
+
+    private void scriviCodici(ArrayList<CodiceFiscale> codici,XMLStreamWriter xmlw,String tag) throws XMLStreamException {
+        xmlw.writeStartElement(tag);
+        xmlw.writeAttribute("numero", Integer.toString((codici.size()-1)));
+
+        for(int i=0; i<codici.size(); i++){
+
+            //tag codice invalidato
+
+            xmlw.writeStartElement("codice");
+            xmlw.writeCharacters(codici.get(i).getCodice_fiscale());
+            xmlw.writeEndElement();
+
+        }
+
+        //chiusura tag codici invalidi
+
+        xmlw.writeEndElement();
     }
 }

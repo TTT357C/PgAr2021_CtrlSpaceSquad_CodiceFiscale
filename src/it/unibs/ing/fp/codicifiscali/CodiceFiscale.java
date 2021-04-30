@@ -18,7 +18,7 @@ public class CodiceFiscale {
     public static final int ALFABETO_LENGTH = 26;
     static final char [] ARR_MESI_IN_LETTERE = {'A','B','C','D','E','H','L','M','P','R','S','T'};
     public static final int CF_LENGTH = 16;
-    public static final int[] ARR_NUMERI = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+    public static final char[] ARR_ALFABETO_NUM = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
     public static final char[] ARR_ALFABETO = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
     static final int [] ARR_VALORI_CHAR_PARI = {0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25};
     static final int [] ARR_VALORI_CHAR_DISPARI = {1,0,5,7,9,13,15,17,19,21,1,0,5,7,9,13,15,17,19,21,2,4,18,20,11,3,6,8,12,14,16,10,22,25,24,23};
@@ -47,7 +47,7 @@ public class CodiceFiscale {
      * @return Ritorna il codice fiscale di una persona
      * @author Mirko Rossi
      */
-    public static CodiceFiscale calcoloCodiceFiscale(Persona persona){
+    public static CodiceFiscale calcoloCodiceFiscale(Persona persona) {
 
 
         String cod_fiscale_str = "";
@@ -58,13 +58,13 @@ public class CodiceFiscale {
         String anno_nascita = "";
         String comune_nascita = "";
 
-        int sommatoria_valori_pari=0;
-        int sommatoria_valori_dispari=0;
-        int sommatoria_valori=0;
+        int sommatoria_valori_pari = 0;
+        int sommatoria_valori_dispari = 0;
+        int sommatoria_valori = 0;
 
         //cognome
 
-        cognome_estratto+=trovaVocaliOConsonanti(ARR_CONSONANTI, persona.getCognome());
+        cognome_estratto += trovaVocaliOConsonanti(ARR_CONSONANTI, persona.getCognome());
 
         /*
         for(int i=0; i<this.getCognome().length(); i++){
@@ -77,7 +77,7 @@ public class CodiceFiscale {
             }
         }*/
 
-        cognome_estratto+=trovaVocaliOConsonanti(ARR_VOCALI, persona.getCognome());
+        cognome_estratto += trovaVocaliOConsonanti(ARR_VOCALI, persona.getCognome());
         /*
         for(int i=0; i<this.getCognome().length(); i++){
             char temp1 = this.getCognome().charAt(i);
@@ -88,14 +88,17 @@ public class CodiceFiscale {
                 }
             }
         }*/
-
-        cod_fiscale_str += cognome_estratto.substring(0, 4);
+        cognome_estratto += "XXX";
+        cod_fiscale_str += cognome_estratto.substring(0, 3);
 
         //nome
 
         //TODO Mirko controlla
 
-        nome_estratto+=trovaVocaliOConsonanti(ARR_CONSONANTI,persona.getNome());
+        nome_estratto += trovaVocaliOConsonanti(ARR_CONSONANTI, persona.getNome());
+        if(nome_estratto.length()>=4){
+            nome_estratto=nome_estratto.substring(0,1)+nome_estratto.substring(2,4);
+        }
 
         /*
         for(int i=0; i<this.getNome().length(); i++){
@@ -108,7 +111,7 @@ public class CodiceFiscale {
             }
         }*/
 
-        nome_estratto+=trovaVocaliOConsonanti(ARR_VOCALI, persona.getNome());
+        nome_estratto += trovaVocaliOConsonanti(ARR_VOCALI, persona.getNome());
 
         /*
         for(int i=0; i<this.getNome().length(); i++){
@@ -121,31 +124,34 @@ public class CodiceFiscale {
             }
         }
         */
-
-        cod_fiscale_str += nome_estratto.substring(0, 4);
+        nome_estratto += "XXX";
+        cod_fiscale_str += nome_estratto.substring(0, 3);
 
         //anno
 
         int anno_int = persona.getData_nascita().getYear();
-        String anno_string="";
-        anno_string = anno_string+anno_int;
-        anno_nascita = anno_string.substring(3, 5);
+        String anno_string = "";
+        anno_string = anno_string + anno_int;
+        anno_nascita = anno_string.substring(2, 4);
         cod_fiscale_str += anno_nascita;
 
         //mese
 
         int mese_int = persona.getData_nascita().getMonthValue();
-        char mese_nascita_char = ARR_MESI_IN_LETTERE[mese_int-1];
+        char mese_nascita_char = ARR_MESI_IN_LETTERE[mese_int - 1];
         mese_nascita += mese_nascita_char;
-
+        cod_fiscale_str += mese_nascita;
 
 
         //giorno
         int giorno_int = persona.getData_nascita().getDayOfMonth();
-        if(persona.getSesso() == 'F'){
+        if (persona.getSesso() == 'F') {
             giorno_int = giorno_int + 40;
         }
-        giorno_nascita = giorno_nascita+giorno_int;
+        giorno_nascita = giorno_nascita + giorno_int;
+        if (Integer.parseInt(giorno_nascita) < 10) {
+            giorno_nascita = "0" + giorno_nascita;
+        }
         cod_fiscale_str += giorno_nascita;
 
 
@@ -156,60 +162,21 @@ public class CodiceFiscale {
 
         //calcolo carattere controllo
 
-        //caratteri in posizioni pari
 
-        for(int i=0; i<cod_fiscale_str.length(); i=i+2){
-            boolean trovato= false;
-
-            for(int j=0; j<ARR_NUMERI.length; j++){
-                if(cod_fiscale_str.charAt(i) == ARR_NUMERI[j]){
-
-                    trovato=true;
-                    sommatoria_valori += ARR_VALORI_CHAR_PARI[j];
-
-                }
-            }
-
-            if(trovato==false){
-                for(int j=0; j<ARR_ALFABETO.length; j++){
-                    if(cod_fiscale_str.charAt(i) == ARR_ALFABETO[j]){
-
-                        trovato=true;
-                        sommatoria_valori += ARR_VALORI_CHAR_PARI[j+(ARR_NUMERI.length-1)];
-
+        for(int i=1;i<=cod_fiscale_str.length();i++){
+            //se pari
+            for(int j=0;j<ARR_ALFABETO_NUM.length;j++) {
+                if(ARR_ALFABETO_NUM[j]==cod_fiscale_str.charAt(i-1)) {
+                    if (i % 2 == 0) {
+                        sommatoria_valori+=ARR_VALORI_CHAR_PARI[j];
+                    } else {
+                        sommatoria_valori+=ARR_VALORI_CHAR_DISPARI[j];
                     }
+
                 }
             }
         }
 
-        //caratteri in posizioni dispari
-
-        for(int i=1; i<cod_fiscale_str.length(); i=i+2){
-
-            boolean trovato= false;
-
-            for(int j=0; j<ARR_NUMERI.length; j++){
-                if(cod_fiscale_str.charAt(i) == ARR_NUMERI[j]){
-
-                    trovato=true;
-                    sommatoria_valori += ARR_VALORI_CHAR_DISPARI[j];
-
-                }
-            }
-
-            if(trovato==false){
-
-                for(int j=0; j<ARR_ALFABETO.length; j++){
-
-                    if(cod_fiscale_str.charAt(i) == ARR_ALFABETO[j]){
-
-                        trovato=true;
-                        sommatoria_valori += ARR_VALORI_CHAR_DISPARI[j+(ARR_NUMERI.length-1)];
-
-                    }
-                }
-            }
-        }
 
         int resto_calcolo_carattere = sommatoria_valori%ALFABETO_LENGTH;
 
@@ -542,12 +509,9 @@ public class CodiceFiscale {
     }
     //---FINE METODI UTILIZZATI NEI PRECEDENTI---
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        CodiceFiscale that = (CodiceFiscale) o;
-        return Objects.equals(codice_fiscale, that.codice_fiscale);
+
+    public boolean equals(CodiceFiscale in) {
+        return codice_fiscale.equals(in.getCodice_fiscale());
     }
 
     @Override

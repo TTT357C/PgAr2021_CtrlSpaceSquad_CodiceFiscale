@@ -53,6 +53,10 @@ public class Main {
 
                         leggixml.leggiPersone(persone, FILENAME_PERSONE, comuni);
 
+                        for (int i=0;i<persone.size();i++) {
+                            persone.get(i).setCodiceFiscale();
+                        }
+
                         //lettura da file dei codici
                         ArrayList <CodiceFiscale> codice_fis = new ArrayList<>();
 
@@ -90,8 +94,10 @@ public class Main {
 
                         //Array per Scrivi XML --> codice_fis_invalidi e codice_fis_val_spa
 
+                        //ScriviXML
                         ScriviXML scriviXml = new ScriviXML();
                         scriviXml.scriviXML(persone,codice_fis_invalidi,codice_fis_val_spa);
+                        System.out.println(" File Scritto Correttamente");
 
                         break;
                     default:
@@ -100,6 +106,8 @@ public class Main {
             }catch (Exception e){
                 System.err.println(ERRORE);
                 System.err.println(" ("+e+")");
+                // printStackTrace method
+                e.printStackTrace();
                 System.out.println("\n");
             }
 
