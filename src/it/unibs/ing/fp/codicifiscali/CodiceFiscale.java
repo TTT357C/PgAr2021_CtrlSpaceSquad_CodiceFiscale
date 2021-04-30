@@ -1,7 +1,5 @@
 package it.unibs.ing.fp.codicifiscali;
 
-import java.util.Objects;
-
 /**
  * @author Thomas Causetti
  */
@@ -28,7 +26,7 @@ public class CodiceFiscale {
 
     /**
      * Costruttore di codice fiscale
-     * @param codice_fiscale
+     * @param codice_fiscale codice fiscale
      */
     public CodiceFiscale(String codice_fiscale) {
         this.codice_fiscale = codice_fiscale;
@@ -58,74 +56,26 @@ public class CodiceFiscale {
         String anno_nascita = "";
         String comune_nascita = "";
 
-        int sommatoria_valori_pari = 0;
-        int sommatoria_valori_dispari = 0;
         int sommatoria_valori = 0;
 
         //cognome
 
         cognome_estratto += trovaVocaliOConsonanti(ARR_CONSONANTI, persona.getCognome());
-
-        /*
-        for(int i=0; i<this.getCognome().length(); i++){
-            char temp1 = this.getCognome().charAt(i);
-            for(int j=0; j<ARR_CONSONANTI.length; j++) {
-                char temp2 = ARR_CONSONANTI[j];
-                if (temp1 == temp2) {
-                    cognome_estratto += temp1;
-                }
-            }
-        }*/
-
         cognome_estratto += trovaVocaliOConsonanti(ARR_VOCALI, persona.getCognome());
-        /*
-        for(int i=0; i<this.getCognome().length(); i++){
-            char temp1 = this.getCognome().charAt(i);
-            for(int j=0; j<ARR_VOCALI.length; j++){
-                char temp2 = ARR_VOCALI[j];
-                if(temp1==temp2){
-                    cognome_estratto += temp1;
-                }
-            }
-        }*/
         cognome_estratto += "XXX";
         cod_fiscale_str += cognome_estratto.substring(0, 3);
 
         //nome
 
-        //TODO Mirko controlla
-
         nome_estratto += trovaVocaliOConsonanti(ARR_CONSONANTI, persona.getNome());
         if(nome_estratto.length()>=4){
-            nome_estratto=nome_estratto.substring(0,1)+nome_estratto.substring(2,4);
+            nome_estratto=nome_estratto.charAt(0)+nome_estratto.substring(2,4);
         }
-
-        /*
-        for(int i=0; i<this.getNome().length(); i++){
-            char temp1 = this.getNome().charAt(i);
-            for(int j=0; j<ARR_CONSONANTI.length; j++) {
-                char temp2 = ARR_CONSONANTI[j];
-                if (temp1 == temp2) {
-                    nome_estratto += temp1;
-                }
-            }
-        }*/
 
         nome_estratto += trovaVocaliOConsonanti(ARR_VOCALI, persona.getNome());
-
-        /*
-        for(int i=0; i<this.getNome().length(); i++){
-            char temp1 = this.getNome().charAt(i);
-            for(int j=0; j<ARR_VOCALI.length; j++){
-                char temp2 = ARR_VOCALI[j];
-                if(temp1==temp2){
-                    nome_estratto += temp1;
-                }
-            }
-        }
-        */
         nome_estratto += "XXX";
         cod_fiscale_str += nome_estratto.substring(0, 3);
+
 
         //anno
 
@@ -184,10 +134,7 @@ public class CodiceFiscale {
 
         cod_fiscale_str += char_controllo;
 
-
-        CodiceFiscale codiceFiscale = new CodiceFiscale(cod_fiscale_str);
-
-        return codiceFiscale;
+        return new CodiceFiscale(cod_fiscale_str);
     }
 
     /**
@@ -221,17 +168,17 @@ public class CodiceFiscale {
         if(cf.length() == CF_LENGTH) {
             //CONTROLLO COGNOME
             boolean checksur = checkSurname(cf);
-            if(checksur==false){
+            if(!checksur){
                 return false;
             }
             //INIZIO CONTROLLO NOME
             boolean check_name = checkName(cf);
-            if(check_name == false) {
+            if(!check_name) {
                 return false;
             }
             //CONTROLLO 2 cifre anno
             boolean check_years = checkYear(cf);
-            if(check_years==false){
+            if(!check_years){
                return false;
            }
             //CHECK MESE
@@ -244,17 +191,17 @@ public class CodiceFiscale {
                     pos_mese = i;
                 }
             }//FINE CHECK MESE
-            if(check_month==false){
+            if(!check_month){
                 return false;
             }
             //CHECK GIORNO
             boolean check_day = checkDay(cf, pos_mese);
-            if(check_day==false){
+            if(!check_day){
                 return false;
             }
             //check codice paese controllo che sia presente in comuni
             boolean checkcode = checkCode(cf);
-            if(checkcode==false){
+            if(!checkcode){
                 return false;
             }
             //CONTROLLO carattere di controllo
@@ -276,9 +223,9 @@ public class CodiceFiscale {
      */
     private boolean checkSurname(String cf) {
         String ctrl_surname = cf.substring(0,3);
-        boolean seq_sur [] =sonoConsonanti(ctrl_surname);
-        boolean checksur = isChecksur(ctrl_surname, seq_sur);
-        return checksur;
+        boolean [] seq_sur =sonoConsonanti(ctrl_surname);
+
+        return isChecksur(ctrl_surname, seq_sur);
     }
 
     /**
@@ -288,9 +235,9 @@ public class CodiceFiscale {
      */
     private boolean checkName(String cf) {
         String ctrl_name = cf.substring(3,6);
-        boolean seq_name [] =sonoConsonanti(ctrl_name);
-        boolean check_name = isChecksur(ctrl_name, seq_name);
-        return check_name;
+        boolean [] seq_name =sonoConsonanti(ctrl_name);
+
+        return isChecksur(ctrl_name, seq_name);
     }
 
     /**
@@ -299,9 +246,9 @@ public class CodiceFiscale {
      * @return true se l'anno di nascita è valido, false altrimenti
      */
     private boolean checkYear(String cf) {
-        String ctrlyear = cf.substring(6,8);
-        boolean check_years = isCheckYears(ctrlyear);
-        return check_years;
+        String ctrl_year = cf.substring(6,8);
+
+        return isCheckYears(ctrl_year);
     }
 
     /**
@@ -312,8 +259,8 @@ public class CodiceFiscale {
      */
     private boolean checkDay(String cf, int pos_mese) {
         String ctrl_day = cf.substring(9,11);
-        boolean check_day = isCheckDay(pos_mese, ctrl_day);
-        return check_day;
+
+        return isCheckDay(pos_mese, ctrl_day);
     }
 
     /**
@@ -323,12 +270,12 @@ public class CodiceFiscale {
      */
     private boolean checkCode(String cf) {
         String ctrl_code = cf.substring(11,15);
-        boolean checkcode=false;
+        boolean check_code=false;
         //Controllo in arraylist Comuni Italiani
-        checkcode = isCheckItalyCode(ctrl_code);
+        check_code = isCheckItalyCode(ctrl_code);
         //Per straniero
-        checkcode = isCheckForeignCode(ctrl_code, checkcode);
-        return checkcode;
+        check_code = isCheckForeignCode(ctrl_code, check_code);
+        return check_code;
     }
 
     /**
@@ -365,8 +312,8 @@ public class CodiceFiscale {
                 }
             }
         }
-        char codice_teorico = (char)((sum % ALFABETO_LENGTH) + ASCII_A);
-        return codice_teorico;
+
+        return (char)((sum % ALFABETO_LENGTH) + ASCII_A);
     }
 
     //---INIZIO METODI UTILIZZATI NEI PRECEDENTI---
@@ -377,7 +324,7 @@ public class CodiceFiscale {
      * @return True se il codice è di un paese estero oppure checkcode è true dunque è gia stato trovato nei paesi italiani, false altrimenti
      */
     private boolean isCheckForeignCode(String ctrl_code, boolean checkcode) {
-        if(checkcode==true){
+        if(checkcode){
             return true;
         }
         if(ctrl_code.charAt(0) == 'Z') {
@@ -407,7 +354,7 @@ public class CodiceFiscale {
 
     /**
      * Calcola se il giorno rappresentato sul c.f. è valido
-     * @param pos_mese Posizione del mese nell'array calcolato precedentemente
+     * @param pos_mese Posizione del mese nell' array calcolato precedentemente
      * @param ctrl_day stringa rappresentante un numero composto da 2 cifre
      * @return Ritorna true se il giorno di nascita è valido false altrimenti
      */
@@ -424,7 +371,7 @@ public class CodiceFiscale {
 
     /**
      * Metodo chhe controlla che sia inserito un numero rappresentato da 2 cifre
-     * @param ctrlyear Stringa di 2 caratteri rappresentanti l'anno di nascita
+     * @param ctrlyear Stringa di 2 caratteri rappresentanti l' anno di nascita
      * @return True se è un anno valido false altrimenti
      */
     private boolean isCheckYears(String ctrlyear) {

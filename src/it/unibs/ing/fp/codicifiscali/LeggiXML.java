@@ -77,7 +77,7 @@ public class LeggiXML {
                 xmlr.next();
             }
         }catch (Exception e){
-            System.err.println(e);
+            System.err.println(e.getMessage());
         }
     }
 
@@ -134,7 +134,7 @@ public class LeggiXML {
                 xmlr.next();
             }
         }catch (Exception e){
-            System.err.println(e);
+            System.err.println(e.getMessage());
         }
 
     }
@@ -177,7 +177,7 @@ public class LeggiXML {
                 xmlr.next();
             }
         }catch (Exception e){
-            System.err.println(e);
+            System.err.println(e.getMessage());
         }
     }
 
@@ -213,7 +213,7 @@ public class LeggiXML {
                 try {
                     continuaFinoCaratteri(xmlr);
                 } catch (XMLStreamException e) {
-                    System.err.println(e);
+                    System.err.println(e.getMessage());
                 }
 
                 //Se ci sono caratteri li aggiunge ad array
@@ -225,7 +225,7 @@ public class LeggiXML {
                 try {
                     xmlr.next();
                 } catch (XMLStreamException e) {
-                    System.out.println(e);
+                    System.out.println(e.getMessage());
                 }
 
                 //Controlla se e' un END_ELEMENT

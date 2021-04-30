@@ -1,8 +1,6 @@
 package it.unibs.ing.fp.codicifiscali;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.*;
 
 
 /**
@@ -19,11 +17,11 @@ public class Persona {
 
     /**
      * Costruttore completo mancante di codice fiscale
-     * @param nome
-     * @param cognome
-     * @param sesso
-     * @param data_nascita
-     * @param luogo_nascita
+     * @param nome Nome Proprio
+     * @param cognome Cognome Proprio
+     * @param sesso Genere
+     * @param data_nascita data nascita
+     * @param luogo_nascita luogo nascita
      */
     public Persona(String nome, String cognome, char sesso, LocalDate data_nascita, Comune luogo_nascita) {
         this.nome = nome;

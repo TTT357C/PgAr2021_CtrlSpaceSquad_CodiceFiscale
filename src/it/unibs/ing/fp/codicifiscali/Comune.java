@@ -7,8 +7,8 @@ public class Comune {
 
     /**
      * Costruttore per inizializzare un comune dato il nome e il codice
-     * @param nome
-     * @param codice
+     * @param nome nome
+     * @param codice codice
      */
     public Comune(String nome, String codice) {
         this.nome = nome;
