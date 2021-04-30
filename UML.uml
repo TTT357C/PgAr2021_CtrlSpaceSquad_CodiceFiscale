@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>it.unibs.ing.fp.codicifiscali.LeggiXML</OriginalElement>
+  <nodes>
+    <node x="204.5360887096778" y="1701.0">it.unibs.ing.fp.codicifiscali.CodiceFiscale</node>
+    <node x="734.5690188172044" y="0.0">it.unibs.ing.fp.codicifiscali.Comune</node>
+    <node x="10.5" y="253.0">it.unibs.ing.fp.codicifiscali.LeggiXML</node>
+    <node x="1391.5000000000005" y="586.0">it.unibs.ing.fp.codicifiscali.ScriviXML</node>
+    <node x="473.31901881720444" y="1211.0">it.unibs.ing.fp.codicifiscali.Main</node>
+    <node x="563.2426075268824" y="3200.0">it.unibs.ing.fp.codicifiscali.Persona</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="it.unibs.ing.fp.codicifiscali.ScriviXML" target="it.unibs.ing.fp.codicifiscali.CodiceFiscale" relationship="DEPENDENCY">
+      <point x="0.0" y="120.0" />
+      <point x="1779.5000000000005" y="1185.0" />
+      <point x="1077.6525537634407" y="1185.0" />
+      <point x="1077.6525537634407" y="1659.0" />
+      <point x="649.5569220430111" y="1659.0" />
+      <point x="649.5569220430111" y="1679.0" />
+      <point x="534.5360887096779" y="1679.0" />
+      <point x="110.00000000000006" y="-712.5" />
+    </edge>
+    <edge source="it.unibs.ing.fp.codicifiscali.Persona" target="it.unibs.ing.fp.codicifiscali.Comune" relationship="TO_ONE">
+      <point x="185.5999999999999" y="-212.5" />
+      <point x="980.8426075268823" y="3178.0" />
+      <point x="1443.0" y="3178.0" />
+      <point x="1443.0" y="233.0" />
+      <point x="1039.3759408602155" y="233.0" />
+      <point x="1039.3759408602155" y="223.0" />
+      <point x="931.8190188172044" y="223.0" />
+      <point x="65.75" y="101.5" />
+    </edge>
+    <edge source="it.unibs.ing.fp.codicifiscali.LeggiXML" target="it.unibs.ing.fp.codicifiscali.Persona" relationship="CREATE">
+      <point x="-204.66666666666663" y="453.0" />
+      <point x="112.83333333333337" y="1185.0" />
+      <point x="159.7233870967748" y="1185.0" />
+      <point x="159.7233870967748" y="3148.0" />
+      <point x="832.3069220430111" y="3148.0" />
+      <point x="832.3069220430111" y="3178.0" />
+      <point x="795.2426075268822" y="3178.0" />
+      <point x="-1.1368683772161603E-13" y="-212.5" />
+    </edge>
+    <edge source="it.unibs.ing.fp.codicifiscali.Main" target="it.unibs.ing.fp.codicifiscali.Comune" relationship="DEPENDENCY">
+      <point x="-48.375" y="-213.0" />
+      <point x="618.4440188172044" y="1185.0" />
+      <point x="635.0" y="1185.0" />
+      <point x="635.0" y="233.0" />
+      <point x="303.31901881720444" y="233.0" />
+      <point x="303.31901881720444" y="223.0" />
+      <point x="800.3190188172044" y="223.0" />
+      <point x="-65.75" y="101.5" />
+    </edge>
+    <edge source="it.unibs.ing.fp.codicifiscali.Main" target="it.unibs.ing.fp.codicifiscali.LeggiXML" relationship="CREATE">
+      <point x="-145.125" y="-213.0" />
+      <point x="204.66666666666663" y="453.0" />
+    </edge>
+    <edge source="it.unibs.ing.fp.codicifiscali.Persona" target="it.unibs.ing.fp.codicifiscali.CodiceFiscale" relationship="DEPENDENCY">
+      <point x="-92.80000000000018" y="-212.5" />
+      <point x="702.4426075268822" y="3168.0" />
+      <point x="277.8694220430111" y="3168.0" />
+      <point x="-146.66666666666669" y="712.5" />
+    </edge>
+    <edge source="it.unibs.ing.fp.codicifiscali.CodiceFiscale" target="it.unibs.ing.fp.codicifiscali.Persona" relationship="DEPENDENCY">
+      <point x="-5.6843418860808015E-14" y="712.5" />
+      <point x="424.53608870967776" y="3148.0" />
+      <point x="832.3069220430111" y="3148.0" />
+      <point x="832.3069220430111" y="3178.0" />
+      <point x="795.2426075268822" y="3178.0" />
+      <point x="-1.1368683772161603E-13" y="-212.5" />
+    </edge>
+    <edge source="it.unibs.ing.fp.codicifiscali.Persona" target="it.unibs.ing.fp.codicifiscali.CodiceFiscale" relationship="TO_ONE">
+      <point x="92.79999999999984" y="-212.5" />
+      <point x="888.0426075268822" y="3158.0" />
+      <point x="571.2027553763444" y="3158.0" />
+      <point x="146.66666666666657" y="712.5" />
+    </edge>
+    <edge source="it.unibs.ing.fp.codicifiscali.Main" target="it.unibs.ing.fp.codicifiscali.Persona" relationship="DEPENDENCY">
+      <point x="129.0" y="213.0" />
+      <point x="795.8190188172044" y="1679.0" />
+      <point x="1179.3333333333335" y="1679.0" />
+      <point x="1179.3333333333335" y="3148.0" />
+      <point x="832.3069220430111" y="3148.0" />
+      <point x="832.3069220430111" y="3178.0" />
+      <point x="795.2426075268822" y="3178.0" />
+      <point x="-1.1368683772161603E-13" y="-212.5" />
+    </edge>
+    <edge source="it.unibs.ing.fp.codicifiscali.LeggiXML" target="it.unibs.ing.fp.codicifiscali.CodiceFiscale" relationship="CREATE">
+      <point x="0.0" y="453.0" />
+      <point x="317.5" y="1185.0" />
+      <point x="327.78608870967787" y="1185.0" />
+      <point x="327.78608870967787" y="1659.0" />
+      <point x="649.5569220430111" y="1659.0" />
+      <point x="649.5569220430111" y="1679.0" />
+      <point x="534.5360887096779" y="1679.0" />
+      <point x="110.00000000000006" y="-712.5" />
+    </edge>
+    <edge source="it.unibs.ing.fp.codicifiscali.Main" target="it.unibs.ing.fp.codicifiscali.Comune" relationship="TO_MANY">
+      <point x="48.375" y="-213.0" />
+      <point x="715.1940188172044" y="1185.0" />
+      <point x="646.0" y="1185.0" />
+      <point x="646.0" y="233.0" />
+      <point x="1039.3759408602155" y="233.0" />
+      <point x="1039.3759408602155" y="223.0" />
+      <point x="931.8190188172044" y="223.0" />
+      <point x="65.75" y="101.5" />
+    </edge>
+    <edge source="it.unibs.ing.fp.codicifiscali.LeggiXML" target="it.unibs.ing.fp.codicifiscali.Comune" relationship="CREATE">
+      <point x="0.0" y="-453.0" />
+      <point x="317.5" y="233.0" />
+      <point x="303.31901881720444" y="233.0" />
+      <point x="303.31901881720444" y="223.0" />
+      <point x="800.3190188172044" y="223.0" />
+      <point x="-65.75" y="101.5" />
+    </edge>
+    <edge source="it.unibs.ing.fp.codicifiscali.CodiceFiscale" target="it.unibs.ing.fp.codicifiscali.Main" relationship="DEPENDENCY">
+      <point x="-109.99999999999994" y="-712.5" />
+      <point x="314.53608870967787" y="1669.0" />
+      <point x="537.8190188172044" y="1669.0" />
+      <point x="-129.0" y="213.0" />
+    </edge>
+    <edge source="it.unibs.ing.fp.codicifiscali.Main" target="it.unibs.ing.fp.codicifiscali.CodiceFiscale" relationship="DEPENDENCY">
+      <point x="0.0" y="213.0" />
+      <point x="666.8190188172044" y="1659.0" />
+      <point x="649.5569220430111" y="1659.0" />
+      <point x="649.5569220430111" y="1679.0" />
+      <point x="534.5360887096779" y="1679.0" />
+      <point x="110.00000000000006" y="-712.5" />
+    </edge>
+    <edge source="it.unibs.ing.fp.codicifiscali.Main" target="it.unibs.ing.fp.codicifiscali.ScriviXML" relationship="CREATE">
+      <point x="145.125" y="-213.0" />
+      <point x="811.9440188172044" y="1185.0" />
+      <point x="1520.8333333333337" y="1185.0" />
+      <point x="-258.66666666666674" y="120.0" />
+    </edge>
+    <edge source="it.unibs.ing.fp.codicifiscali.Persona" target="it.unibs.ing.fp.codicifiscali.Comune" relationship="DEPENDENCY">
+      <point x="-185.60000000000025" y="-212.5" />
+      <point x="609.6426075268821" y="3178.0" />
+      <point x="0.0" y="3178.0" />
+      <point x="0.0" y="233.0" />
+      <point x="303.31901881720444" y="233.0" />
+      <point x="303.31901881720444" y="223.0" />
+      <point x="800.3190188172044" y="223.0" />
+      <point x="-65.75" y="101.5" />
+    </edge>
+    <edge source="it.unibs.ing.fp.codicifiscali.ScriviXML" target="it.unibs.ing.fp.codicifiscali.Persona" relationship="DEPENDENCY">
+      <point x="258.66666666666674" y="120.0" />
+      <point x="2038.1666666666672" y="1185.0" />
+      <point x="1179.3333333333335" y="1185.0" />
+      <point x="1179.3333333333335" y="3148.0" />
+      <point x="832.3069220430111" y="3148.0" />
+      <point x="832.3069220430111" y="3178.0" />
+      <point x="795.2426075268822" y="3178.0" />
+      <point x="-1.1368683772161603E-13" y="-212.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="0.3999999999999998" showDependencies="true" x="1238.1991978609628" y="911.2500000000005" />
+  <SelectedNodes>
+    <node>it.unibs.ing.fp.codicifiscali.ScriviXML</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Constructors</Category>
+    <Category>Fields</Category>
+    <Category>Inner Classes</Category>
+    <Category>Methods</Category>
+    <Category>Properties</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

@@ -81,6 +81,7 @@ public class Main {
                         codice_fis_val_spa = codice_fis_validi;
 
 
+                        //For per la suddivisione del array codice_fis_validi in codici accoppiati (acc) e codici spaiati (spa)
                         for (int i=0;i<persone.size();i++) {
                             for (int j=0;j<codice_fis_validi.size();j++){
                                 if(codice_fis_validi.get(j).equals(persone.get(i).getCod_fiscale())){
