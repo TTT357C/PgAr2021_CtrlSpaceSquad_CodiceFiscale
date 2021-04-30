@@ -257,7 +257,6 @@ public class CodiceFiscale {
         }
     }
 
-
     /**
      * Metodo che controlla la validità di un codice fiscale
      * @return Ritorna True se il codice fiscale è valido, false altrimenti
@@ -268,9 +267,8 @@ public class CodiceFiscale {
         String cf = (this.getCodice_fiscale()).toUpperCase();
         //controllo lunghezza uguale a 16 caratteri altrimenti ritorna subito false
         if(cf.length() == CF_LENGTH) {
-            String ctrl_surname = cf.substring(0,3);
             //CONTROLLO COGNOME
-            boolean checksur = checkSurname(ctrl_surname);
+            boolean checksur = checkSurname(cf);
             if(checksur==false){
                 return false;
             }
@@ -308,11 +306,7 @@ public class CodiceFiscale {
                 return false;
             }
             //CONTROLLO carattere di controllo
-            int sum=0;
-            sum = sommaChar(cf, sum);
-            char codice_teorico = (char)((sum % ALFABETO_LENGTH) + ASCII_A);
-            char codice_reale = cf.charAt(CF_LENGTH-1);
-            if(codice_teorico == codice_reale) {
+            if(calcoloCharControllo(cf) == ((char) cf.charAt(CF_LENGTH-1))) {
                 return true;
             }
             else{
@@ -323,46 +317,75 @@ public class CodiceFiscale {
             return false;
         }
     }
-
-    private boolean checkCode(String cf) {
-        String ctrl_code = cf.substring(11,15);
-        boolean checkcode=false;
-        //Controllo in arraylist Comuni Italiani
-        checkcode = isCheckItalyCode(ctrl_code, checkcode);
-        //Per straniero
-        checkcode = isCheckForeignCode(ctrl_code, checkcode);
-        return checkcode;
+    /**
+     *Metodo che controlla i primi 3 caratteri
+     * @param cf Codice Fiscale
+     * @return True se i primi 3 caratteri del codice fiscale sono in un foramto corretto
+     */
+    private boolean checkSurname(String cf) {
+        String ctrl_surname = cf.substring(0,3);
+        boolean seq_sur [] =sonoConsonanti(ctrl_surname);
+        boolean checksur = isChecksur(ctrl_surname, seq_sur);
+        return checksur;
     }
 
-    private boolean checkDay(String cf, int pos_mese) {
-        String ctrl_day = cf.substring(9,11);
-        boolean check_day=false;
-        check_day = isCheckDay(pos_mese, ctrl_day, check_day);
-        return check_day;
+    /**
+     * Metodo controlla se il formato dei secondi 3 caratteri del c.f. sono validi
+     * @param cf Codice fiscale
+     * @return True se il formato del nome è corretto, false altrimenti
+     */
+    private boolean checkName(String cf) {
+        String ctrl_name = cf.substring(3,6);
+        boolean seq_name [] =sonoConsonanti(ctrl_name);
+        boolean check_name = isChecksur(ctrl_name, seq_name);
+        return check_name;
     }
 
+    /**
+     *  Metodo che controlla se il formato dell'anno è corretto
+     * @param cf codice fiscale
+     * @return true se l'anno di nascita è valido, false altrimenti
+     */
     private boolean checkYear(String cf) {
         String ctrlyear = cf.substring(6,8);
         boolean check_years = isCheckYears(ctrlyear);
         return check_years;
     }
 
-    private boolean checkName(String cf) {
-        String ctrl_name = cf.substring(3,6);
-        boolean seq_name [] =sonoConsonanti(ctrl_name);
-        boolean check_name = false;
-        check_name = isChecksur(ctrl_name, seq_name);
-        return check_name;
+    /**
+     *Metodo che controlla se i 2 caratteri dell'anno di nascita sono in un formato valido
+     * @param cf Codice fiscale
+     * @param pos_mese Posizione del mese calcolata in precedenza
+     * @return True se il giorno è valido false altrimenti
+     */
+    private boolean checkDay(String cf, int pos_mese) {
+        String ctrl_day = cf.substring(9,11);
+        boolean check_day = isCheckDay(pos_mese, ctrl_day);
+        return check_day;
     }
 
-    private boolean checkSurname(String ctrl_surname) {
-        boolean checksur=false;
-        boolean seq_sur [] =sonoConsonanti(ctrl_surname);
-        checksur = isChecksur(ctrl_surname, seq_sur);
-        return checksur;
+    /**
+     *Metodo che calcola se il codice del comune di nascita è valido
+     * @param cf Codice fiscale
+     * @return True se il codice del comune è valido, false altrimenti
+     */
+    private boolean checkCode(String cf) {
+        String ctrl_code = cf.substring(11,15);
+        boolean checkcode=false;
+        //Controllo in arraylist Comuni Italiani
+        checkcode = isCheckItalyCode(ctrl_code);
+        //Per straniero
+        checkcode = isCheckForeignCode(ctrl_code, checkcode);
+        return checkcode;
     }
 
-    private int sommaChar(String cf, int sum) {
+    /**
+     * Metodo che calcola il codice di controllo del codice fiscale passato
+     * @param cf Codice Fiscale come stringa
+     * @return Char carattere di controllo del c.f.
+     */
+    private char calcoloCharControllo(String cf) {
+        int sum=0;
         for (int i = 0; i < (cf.length()-1); i++) {
             if((i+1)%2 == 0) {
                 //caratteri in posizione pari
@@ -390,22 +413,38 @@ public class CodiceFiscale {
                 }
             }
         }
-        return sum;
+        char codice_teorico = (char)((sum % ALFABETO_LENGTH) + ASCII_A);
+        return codice_teorico;
     }
 
+    //---INIZIO METODI UTILIZZATI NEI PRECEDENTI---
+    /**
+     *
+     * @param ctrl_code Codice comune di nascita
+     * @param checkcode Boolean è true se è gia stato trovato nei paesi italiani , false altrimenti
+     * @return True se il codice è di un paese estero oppure checkcode è true dunque è gia stato trovato nei paesi italiani, false altrimenti
+     */
     private boolean isCheckForeignCode(String ctrl_code, boolean checkcode) {
+        if(checkcode==true){
+            return true;
+        }
         if(ctrl_code.charAt(0) == 'Z') {
             if(ctrl_code.charAt(1)>=ASCII_ZERO && ctrl_code.charAt(1)<=ASCII_NOVE
                     && ctrl_code.charAt(2)>=ASCII_ZERO && ctrl_code.charAt(2)<=ASCII_NOVE
                     && ctrl_code.charAt(3)>=ASCII_ZERO && ctrl_code.charAt(3)<=ASCII_NOVE) {
-                checkcode =true;
+                return true;
             }
-        } //fine check codice nata all'estero
-        return checkcode;
+        }
+        return false;
     }
 
-    private boolean isCheckItalyCode(String ctrl_code, boolean checkcode) {
-         checkcode = false;
+    /**
+     * Metodo che cerca se il codice del comune di nascita è valido ed è presente nell'array list comuni
+     * @param ctrl_code Codice comune di nascita
+     * @return True se è valido il codice, false altrimenti;
+     */
+    private boolean isCheckItalyCode(String ctrl_code) {
+        boolean checkcode = false;
         for (int i = 0; i < Main.getComuni().size() ; i++) {
             if (ctrl_code.equals(Main.getComuni().get(i).getCodice())){
                 checkcode =true;
@@ -417,12 +456,11 @@ public class CodiceFiscale {
     /**
      * Calcola se il giorno rappresentato sul c.f. è valido
      * @param pos_mese Posizione del mese nell'array calcolato precedentemente
-     * @param ctrl_day stringa rappresentante un numero
-     * @param check_day
+     * @param ctrl_day stringa rappresentante un numero composto da 2 cifre
      * @return Ritorna true se il giorno di nascita è valido false altrimenti
      */
-    private boolean isCheckDay(int pos_mese, String ctrl_day, boolean check_day) {
-        check_day =false;
+    private boolean isCheckDay(int pos_mese, String ctrl_day) {
+        boolean check_day =false;
         if(ctrl_day.charAt(0) >= ASCII_ZERO && ctrl_day.charAt(0) <= ASCII_NOVE && ctrl_day.charAt(1) >= ASCII_ZERO && ctrl_day.charAt(1) <= ASCII_NOVE) {
             int ctrldayInt = Integer.parseInt(ctrl_day);
             if(ctrldayInt > 0 && (ctrldayInt <= ARR_GIORNI_IN_UN__MESE[pos_mese] ||  (ctrldayInt <= (ARR_GIORNI_IN_UN__MESE[pos_mese]+ INCREMENTO_MESE_DONNE)))) {
@@ -438,7 +476,7 @@ public class CodiceFiscale {
      * @return True se è un anno valido false altrimenti
      */
     private boolean isCheckYears(String ctrlyear) {
-        boolean check_years=false;
+        boolean check_years = false;
         if(ctrlyear.charAt(0) >= ASCII_ZERO && ctrlyear.charAt(0) <= ASCII_NOVE && ctrlyear.charAt(1) >= ASCII_ZERO && ctrlyear.charAt(1) <= ASCII_NOVE) {
             check_years =true;
         } //FINE CHECK YEAR
@@ -449,10 +487,10 @@ public class CodiceFiscale {
      * Calcola se la disposizione delle prime tre lettere del c.f. sono in un formato valido
      * @param ctrl_surname Prime tre lettere del codice fiscale
      * @param seq_sur Calcolato dal metodo sonoConsonanti
-     * @return Boolean true se il formato è corretto con controllo anche sul nome, false altrimenti
+     * @return Boolean true se il formato è corretto con controllo anche sul nome e cognome troppo corti, false altrimenti
      */
     private boolean isChecksur(String ctrl_surname, boolean[] seq_sur) {
-        boolean checksur =false;
+        boolean checksur = false;
         if (areAllTrue(seq_sur)) {
             //Tutte consonanti
             checksur = true;
@@ -469,24 +507,33 @@ public class CodiceFiscale {
     }
 
     /**
-     * Data le prime tre lettere del cognome trova se è consonante true false altrimenti
+     * Data tre lettere del codice fiscale salva in un array boolean true se il carattere è una consonante false altrimenti
+     * Vengono controllati anche se sono stati immessi caratteri non validi
      * @param ctrl_surname
      * @return Array di boolean true se in posizione una consonante
      */
     private boolean[] sonoConsonanti(String ctrl_surname) {
         boolean [] seq_nick={false,false,false};
+        boolean carattere_non_valido = false;
         for (int i = 0; i < ARR_CONSONANTI.length; i++) {
             for (int j = 0; j < ctrl_surname.length(); j++) {
                 if ((ctrl_surname.charAt(j)) == (ARR_CONSONANTI[i])) {
                     seq_nick[j] = true;
                 }
+                 if(!isVocale(ctrl_surname.charAt(j)) && !(ctrl_surname.charAt(j) >= ASCII_A && ctrl_surname.charAt(j) <= ASCII_Z)){
+                    carattere_non_valido = true;
+                }
             }
+        }
+        if(carattere_non_valido){
+            for (int i = 0; i < seq_nick.length; i++)
+                seq_nick[i] = false;
         }
         return seq_nick;
     }
 
     /**
-     *
+     *Metodo che trova se il carattere pasato è una vocale (true)
      * @param charSequence Carattere tipo char
      * @return Ritorna true se è una vocale false altrimenti
      */
@@ -502,12 +549,13 @@ public class CodiceFiscale {
 
     /*
      * @param array di tipo boolean
-     * @return True gli elementi sono true
+     * @return True gli elementi dell'array sono true
      */
     public static boolean areAllTrue(boolean[] array) {
         for(boolean b : array) if(!b) return false;
         return true;
     }
+    //---FINE METODI UTILIZZATI NEI PRECEDENTI---
 
     @Override
     public boolean equals(Object o) {
